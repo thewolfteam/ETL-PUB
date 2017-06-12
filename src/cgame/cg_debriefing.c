@@ -1,3 +1,6 @@
+/**
+ * @file cg_debriefing.c
+ */
 #include "cg_local.h"
 
 team_t CG_Debriefing_FindWinningTeam( void );
