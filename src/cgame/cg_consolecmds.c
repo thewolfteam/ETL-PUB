@@ -28,167 +28,107 @@ CG_Viewpos_f
 Debugging command to print the current position
 =============
 */
-static void CG_Viewpos_f(void)
-{
+static void CG_Viewpos_f (void) {
 	CG_Printf ("(%i %i %i) : %i\n", (int)cg.refdef.vieworg[0],
 		(int)cg.refdef.vieworg[1], (int)cg.refdef.vieworg[2], 
 		(int)cg.refdefViewAngles[YAW]);
 }
 
-/**
- * @brief CG_LimboMenu_f
- */
-void CG_LimboMenu_f(void)
-{
-	if (cg.showGameView)
-	{
+void CG_LimboMenu_f( void ) {
+	if( cg.showGameView ) {
 		CG_EventHandling( CGAME_EVENT_NONE, qfalse );
-	}
-	else
-	{
+	} else {
 		CG_EventHandling( CGAME_EVENT_GAMEVIEW, qfalse );
 	}
 }
 
-/**
- * @brief CG_StatsDown_f
- */
 static void CG_StatsDown_f(void)
 {
-	if (!cg.demoPlayback)
-	{
-		if (
-#ifdef FEATURE_MULTIVIEW
-			cg.mvTotalClients < 1 &&
-#endif
-			cg.snap->ps.persistant[PERS_TEAM] == TEAM_SPECTATOR)
-		{
+	if(!cg.demoPlayback) {
+		int i = (cg.mvTotalClients > 0) ? (cg.mvCurrentActive->mvInfo & MV_PID) : cg.snap->ps.clientNum;
+
+		if(cg.mvTotalClients < 1 && cg.snap->ps.persistant[PERS_TEAM] == TEAM_SPECTATOR) {
 			Pri("You must be a player or following a player to use +stats\n");
 			return;
 		}
 
-		if (cgs.gamestats.show == SHOW_SHUTDOWN && cg.time < cgs.gamestats.fadeTime)
-		{
+		if(cgs.gamestats.show == SHOW_SHUTDOWN && cg.time < cgs.gamestats.fadeTime) {
 			cgs.gamestats.fadeTime = 2 * cg.time + STATS_FADE_TIME - cgs.gamestats.fadeTime;
-		}
-		else if (cgs.gamestats.show != SHOW_ON)
-		{
+		} else if(cgs.gamestats.show != SHOW_ON) {
 			cgs.gamestats.fadeTime = cg.time + STATS_FADE_TIME;
 		}
 
 		cgs.gamestats.show = SHOW_ON;
 
-		if (cgs.gamestats.requestTime < cg.time)
-		{
-			int i =
-#ifdef FEATURE_MULTIVIEW
-				(cg.mvTotalClients > 0) ? (cg.mvCurrentActive->mvInfo & MV_PID) :
-#endif
-				cg.snap->ps.clientNum;
-
+		if(cgs.gamestats.requestTime < cg.time) {
 			cgs.gamestats.requestTime = cg.time + 2000;
 			trap_SendClientCommand(va("sgstats %d", i));
 		}
 	}
 }
 
-/**
- * @brief CG_StatsUp_f
- */
 static void CG_StatsUp_f(void)
 {
-	if (cgs.gamestats.show == SHOW_ON)
-	{
+	if(cgs.gamestats.show == SHOW_ON) {
 		cgs.gamestats.show = SHOW_SHUTDOWN;
-		if (cg.time < cgs.gamestats.fadeTime)
-		{
+		if(cg.time < cgs.gamestats.fadeTime) {
 			cgs.gamestats.fadeTime = 2 * cg.time + STATS_FADE_TIME - cgs.gamestats.fadeTime;
-		}
-		else
-		{
+		} else {
 			cgs.gamestats.fadeTime = cg.time + STATS_FADE_TIME;
 		}
 	}
 }
 
-/**
- * @brief CG_topshotsDown_f
- */
 void CG_topshotsDown_f(void)
 {
-	if (!cg.demoPlayback)
-	{
-		if (cgs.topshots.show == SHOW_SHUTDOWN && cg.time < cgs.topshots.fadeTime)
-		{
+	if(!cg.demoPlayback) {
+		if(cgs.topshots.show == SHOW_SHUTDOWN && cg.time < cgs.topshots.fadeTime) {
 			cgs.topshots.fadeTime = 2 * cg.time + STATS_FADE_TIME - cgs.topshots.fadeTime;
-		}
-		else if (cgs.topshots.show != SHOW_ON)
-		{
+		} else if(cgs.topshots.show != SHOW_ON) {
 			cgs.topshots.fadeTime = cg.time + STATS_FADE_TIME;
 		}
 
 		cgs.topshots.show = SHOW_ON;
 
-		if (cgs.topshots.requestTime < cg.time)
-		{
+		if(cgs.topshots.requestTime < cg.time) {
 			cgs.topshots.requestTime = cg.time + 2000;
 			trap_SendClientCommand("stshots");
 		}
 	}
 }
 
-/**
- * @brief CG_topshotsUp_f
- */
 void CG_topshotsUp_f(void)
 {
-	if (cgs.topshots.show == SHOW_ON)
-	{
+	if(cgs.topshots.show == SHOW_ON) {
 		cgs.topshots.show = SHOW_SHUTDOWN;
-		if (cg.time < cgs.topshots.fadeTime)
-		{
+		if(cg.time < cgs.topshots.fadeTime) {
 			cgs.topshots.fadeTime = 2 * cg.time + STATS_FADE_TIME - cgs.topshots.fadeTime;
-		}
-		else
-		{
+		} else {
 			cgs.topshots.fadeTime = cg.time + STATS_FADE_TIME;
 		}
 	}
 }
 
-/**
- * @brief CG_objectivesDown_f
- */
 void CG_objectivesDown_f(void)
 {
-	if (!cg.demoPlayback)
-	{
-		if (cgs.objectives.show == SHOW_SHUTDOWN && cg.time < cgs.objectives.fadeTime)
-		{
+	if(!cg.demoPlayback) {
+		if (cgs.objectives.show == SHOW_SHUTDOWN && cg.time < cgs.objectives.fadeTime) {
 			cgs.objectives.fadeTime = 2 * cg.time + STATS_FADE_TIME - cgs.objectives.fadeTime;
-		}
-		else if (cgs.objectives.show != SHOW_ON)
-		{
+		} else if (cgs.objectives.show != SHOW_ON) {
 			cgs.objectives.fadeTime = cg.time + STATS_FADE_TIME;
 		}
+
 		cgs.objectives.show = SHOW_ON;
 	}
 }
 
-/**
- * @brief CG_objectivesUp_f
- */
 void CG_objectivesUp_f(void)
 {
-	if (cgs.objectives.show == SHOW_ON)
-	{
+	if (cgs.objectives.show == SHOW_ON) {
 		cgs.objectives.show = SHOW_SHUTDOWN;
-		if (cg.time < cgs.objectives.fadeTime)
-		{
+		if (cg.time < cgs.objectives.fadeTime) {
 			cgs.objectives.fadeTime = 2 * cg.time + STATS_FADE_TIME - cgs.objectives.fadeTime;
-		}
-		else
-		{
+		} else {
 			cgs.objectives.fadeTime = cg.time + STATS_FADE_TIME;
 		}
 	}
@@ -239,8 +179,7 @@ void CG_ScoresDown_f( void ) {
 	}
 	cg.scoresDownTime = cg.time;
 
-	if (cg.scoresRequestTime + 2000 < cg.time)
-	{
+	if ( cg.scoresRequestTime + 2000 < cg.time ) {
 		// the scores are more than two seconds out of data,
 		// so request new ones
 		cg.scoresRequestTime = cg.time;
@@ -256,10 +195,7 @@ void CG_ScoresDown_f( void ) {
 			if(!cg.demoPlayback && cg.mvTotalClients < 1 && !cgs.clientinfo[cg.clientNum].ettv) 
 				cg.numScores = 0;
 		}
-		}
-	}
-	else
-	{
+	} else {
 		// show the cached contents even if they just pressed if it
 		// is within two seconds
 		cg.showScores = qtrue;
@@ -499,22 +435,20 @@ void CG_StopCamera( void ) {
 
 }
 
+static void CG_Fade_f( void ) {
+	int r, g, b, a;
+	float duration;
 
-static void CG_Fade_f(void)
-{
-	int r, g, b, a, duration;
-
-	if (trap_Argc() < 6)
-	{
+	if ( trap_Argc() < 6 ) {
 		return;
 	}
 
-	r = (int)atof(CG_Argv(1));
-	g = (int)atof(CG_Argv(2));
-	b = (int)atof(CG_Argv(3));
-	a = (int)atof(CG_Argv(4));
+	r = atof(CG_Argv(1));
+	g = atof(CG_Argv(2));
+	b = atof(CG_Argv(3));
+	a = atof(CG_Argv(4));
 
-	duration = (int)(atof(CG_Argv(5)) * 1000);
+	duration = atof(CG_Argv(5)) * 1000;
 
 	CG_Fade(r, g, b, a, cg.time, duration);
 }
@@ -540,7 +474,7 @@ void CG_ClassSelectMenu_f(void) {
 
 void CG_QuickMessage_f( void ) {
 	if( cgs.clientinfo[ cg.clientNum ].team == TEAM_SPECTATOR &&
-		cgs.etlpub < ETLPUB_VERSION(0,1,0) ) {
+		cgs.etpub < ETPUB_VERSION(0,7,0) ) {
 		return;
 	}
 
@@ -548,115 +482,69 @@ void CG_QuickMessage_f( void ) {
 
 	if( cg_quickMessageAlt.integer ) {
 		trap_UI_Popup( UIMENU_WM_QUICKMESSAGEALT );
-	}
-	else
-	{
+	} else {
 		trap_UI_Popup( UIMENU_WM_QUICKMESSAGE );
 	}
 }
 
-/**
- * @brief CG_QuickFireteamMessage_f
- */
-void CG_QuickFireteamMessage_f(void)
-{
-	if (cgs.clientinfo[cg.clientNum].team == TEAM_SPECTATOR || cgs.clientinfo[cg.clientNum].team == TEAM_FREE)
-	{
+void CG_QuickFireteamMessage_f( void ) {
+	if( cgs.clientinfo[ cg.clientNum ].team == TEAM_SPECTATOR ) {
 		return;
 	}
 
 	CG_EventHandling( CGAME_EVENT_NONE, qfalse );
 
-	if (cg_quickMessageAlt.integer)
-	{
+	if( cg_quickMessageAlt.integer ) {
 		trap_UI_Popup( UIMENU_WM_FTQUICKMESSAGEALT );
-	}
-	else
-	{
+	} else {
 		trap_UI_Popup( UIMENU_WM_FTQUICKMESSAGE );
 	}
 }
 
-/**
- * @brief CG_QuickFireteamAdmin_f
- */
-void CG_QuickFireteamAdmin_f(void)
-{
+void CG_QuickFireteamAdmin_f( void ) {
 	trap_UI_Popup( UIMENU_NONE );
 	
-	if (cg.showFireteamMenu)
-	{
-		if (cgs.ftMenuMode == 1)
-		{
+	if( cg.showFireteamMenu ) {
+		if( cgs.ftMenuMode == 1 ) {
 			CG_EventHandling( CGAME_EVENT_NONE, qfalse );
-		}
-		else
-		{
+		} else {
 			cgs.ftMenuMode = 1;
 		}
-	}
-	else if (cgs.clientinfo[cg.clientNum].team != TEAM_SPECTATOR)
-	{
+	} else if( cgs.clientinfo[ cg.clientNum ].team != TEAM_SPECTATOR ) {
 		CG_EventHandling( CGAME_EVENT_FIRETEAMMSG, qfalse );
 		cgs.ftMenuMode = 1;
 	}
 }
 
-/**
- * @brief CG_QuickFireteams_f
- */
-static void CG_QuickFireteams_f(void)
-{
-	if (!CG_IsOnFireteam(cg.clientNum))
-	{
-		return;
-	}
-
-	if (cg.showFireteamMenu)
-	{
-		if (cgs.ftMenuMode == 0)
-		{
+static void CG_QuickFireteams_f( void ) {
+	if( cg.showFireteamMenu ) {
+		if( cgs.ftMenuMode == 0 ) {
 			CG_EventHandling( CGAME_EVENT_NONE, qfalse );
-		}
-		else
-		{
+		} else {
 			cgs.ftMenuMode = 0;
 		}
-	}
- else if( CG_IsOnFireteam( cg.clientNum ) ) 
-{
+	} else if( CG_IsOnFireteam( cg.clientNum ) ) {
 		CG_EventHandling( CGAME_EVENT_FIRETEAMMSG, qfalse );
 		cgs.ftMenuMode = 0;
 	}
+}
 
-/**
- * @brief CG_FTSayPlayerClass_f
- */
-static void CG_FTSayPlayerClass_f(void)
-{
-	int        playerType = cgs.clientinfo[cg.clientNum].cls;
+static void CG_FTSayPlayerClass_f( void ) {
+	int playerType;
 	const char *s;
 
+	playerType = cgs.clientinfo[ cg.clientNum ].cls;
+
 	if ( playerType == PC_MEDIC )
-	{
 		s = "IamMedic";
-	}
 	else if ( playerType == PC_ENGINEER )
-	{
 		s = "IamEngineer";
-	}
 	else if ( playerType == PC_FIELDOPS )
-	{
 		s = "IamFieldOps";
-	}
 	else if ( playerType == PC_COVERTOPS )
-	{
 		s = "IamCovertOps";
-	}
 	else
-	{
 		s = "IamSoldier";
-	}
 
 	if ( cg.snap && cg.snap->ps.pm_type != PM_INTERMISSION ) {
 		if ( cgs.clientinfo[cg.clientNum].team == TEAM_SPECTATOR || 
@@ -669,41 +557,29 @@ static void CG_FTSayPlayerClass_f(void)
 	trap_SendConsoleCommand( va( "cmd vsay_buddy -1 %s %s\n", CG_BuildSelectedFirteamString(), s ) );
 }
 
-/**
- * @brief CG_SayPlayerClass_f
- */
 static void CG_SayPlayerClass_f( void )
 {
-	int        playerType = cgs.clientinfo[cg.clientNum].cls;
+	int playerType;
 	const char *s;
 
+	playerType = cgs.clientinfo[ cg.clientNum ].cls;
+
 	if ( playerType == PC_MEDIC )
-	{
 		s = "IamMedic";
-	}
 	else if ( playerType == PC_ENGINEER )
-	{
 		s = "IamEngineer";
-	}
 	else if ( playerType == PC_FIELDOPS )
-	{
 		s = "IamFieldOps";
-	}
 	else if ( playerType == PC_COVERTOPS )
-	{
 		s = "IamCovertOps";
-	}
 	else
-	{
 		s = "IamSoldier";
-	}
 
 	// kw: still keeping this disabled for spectators.
-	if (cg.snap && (cg.snap->ps.pm_type != PM_INTERMISSION))
-	{
-		if (cgs.clientinfo[cg.clientNum].team == TEAM_SPECTATOR || cgs.clientinfo[cg.clientNum].team == TEAM_FREE)
-		{
-			CG_Printf("%s", CG_TranslateString("Can't team voice chat as a spectator.\n"));
+	if ( cg.snap && cg.snap->ps.pm_type != PM_INTERMISSION ) {
+		if ( cgs.clientinfo[cg.clientNum].team == TEAM_SPECTATOR || 
+				cgs.clientinfo[cg.clientNum].team == TEAM_FREE ) {
+			CG_Printf ( CG_TranslateString( "Can't team voice chat as a spectator.\n" ) );
 			return;
 		}
 	}
@@ -711,41 +587,31 @@ static void CG_SayPlayerClass_f( void )
 	trap_SendConsoleCommand( va( "cmd vsay_team %s\n", s ) );
 }
 
-/**
- * @brief CG_VoiceChat_f
- */
-static void CG_VoiceChat_f(void)
-{
+static void CG_VoiceChat_f( void ) {
 	char chatCmd[64];
 
 	if ( trap_Argc() != 2 )
-	{
 		return;
-	}
 
 	trap_Argv( 1, chatCmd, 64 );
+
 	trap_SendConsoleCommand( va( "cmd vsay %s\n", chatCmd ) );
 }
 
-/**
- * @brief CG_TeamVoiceChat_f
- */
-static void CG_TeamVoiceChat_f(void)
-{
+static void CG_TeamVoiceChat_f( void ) {
 	char chatCmd[64];
 
-	if (trap_Argc() != 2)
-	{
+	if( trap_Argc() != 2 ) {
 		return;
 	}
 
 	// NERVE - SMF - don't let spectators voice chat
 	// NOTE - This cg.snap will be the person you are following, but its just for intermission test
-	if (cg.snap && (cg.snap->ps.pm_type != PM_INTERMISSION))
-	{
-		if (cgs.clientinfo[cg.clientNum].team == TEAM_SPECTATOR || cgs.clientinfo[cg.clientNum].team == TEAM_FREE)
-		{
-			CG_Printf("%s", CG_TranslateString("Can't team voice chat as a spectator.\n")); // FIXME? find a way to print this on screen
+	if ( cg.snap && cg.snap->ps.pm_type != PM_INTERMISSION &&
+			cgs.etpub < ETPUB_VERSION(0,7,0) ) {
+		if ( cgs.clientinfo[cg.clientNum].team == TEAM_SPECTATOR || 
+				cgs.clientinfo[cg.clientNum].team == TEAM_FREE ) {
+			CG_Printf ( CG_TranslateString( "Can't team voice chat as a spectator.\n" ) );
 			return;
 		}
 	}
@@ -755,25 +621,18 @@ static void CG_TeamVoiceChat_f(void)
 	trap_SendConsoleCommand( va( "cmd vsay_team %s\n", chatCmd ) );
 }
 
-/**
- * @brief CG_BuddyVoiceChat_f
- */
-static void CG_BuddyVoiceChat_f(void)
-{
+static void CG_BuddyVoiceChat_f( void ) {
 	char chatCmd[64];
 
-	if (trap_Argc() != 2)
-	{
+	if( trap_Argc() != 2 ) {
 		return;
 	}
 
 	// NERVE - SMF - don't let spectators voice chat
 	// NOTE - This cg.snap will be the person you are following, but its just for intermission test
-	if (cg.snap && (cg.snap->ps.pm_type != PM_INTERMISSION))
-	{
-		if (cgs.clientinfo[cg.clientNum].team == TEAM_SPECTATOR || cgs.clientinfo[cg.clientNum].team == TEAM_FREE)
-		{
-			CG_Printf("%s", CG_TranslateString("Can't buddy voice chat as a spectator.\n"));
+	if ( cg.snap && ( cg.snap->ps.pm_type != PM_INTERMISSION ) ) {
+		if ( cgs.clientinfo[cg.clientNum].team == TEAM_SPECTATOR || cgs.clientinfo[cg.clientNum].team == TEAM_FREE ) {
+			CG_Printf ( CG_TranslateString( "Can't buddy voice chat as a spectator.\n" ) );
 			return;
 		}
 	}
@@ -783,16 +642,12 @@ static void CG_BuddyVoiceChat_f(void)
 	trap_SendConsoleCommand( va( "cmd vsay_buddy -1 %s %s\n", CG_BuildSelectedFirteamString(), chatCmd ) );
 }
 
-/**
- * @brief CG_MessageMode_f
- * @details say, team say, etc
- */
-static void CG_MessageMode_f(void)
-{
+
+// ydnar: say, team say, etc
+static void CG_MessageMode_f( void ) {
 	char	cmd[ 64 ];	
 
-	if (cgs.eventHandling != CGAME_EVENT_NONE)
-	{
+	if( cgs.eventHandling != CGAME_EVENT_NONE ) {
 		return;
 	}
 	
@@ -804,11 +659,13 @@ static void CG_MessageMode_f(void)
 	{
 		trap_Cvar_Set( "cg_messageType", "2" );
 	}
+	
 	// fireteam say
-	else if (!Q_stricmp(cmd, "messagemode3") && CG_IsOnFireteam(cg.clientNum))
+	else if( !Q_stricmp( cmd, "messagemode3" ) )
 	{
 		trap_Cvar_Set( "cg_messageType", "3" );
 	}
+	
 	// (normal) say
 	else
 	{
@@ -822,13 +679,11 @@ static void CG_MessageMode_f(void)
 	trap_UI_Popup( UIMENU_INGAME_MESSAGEMODE );
 }
 
-/**
- * @brief CG_MessageSend_f
- */
 static void CG_MessageSend_f( void )
 {
 	char	messageText[ 256 ];
 	int		messageType;
+	
 	
 	// get values
 	trap_Cvar_VariableStringBuffer( "cg_messageType", messageText, 256 );
@@ -838,196 +693,134 @@ static void CG_MessageSend_f( void )
 	// reset values
 	trap_Cvar_Set( "cg_messageText", "" );
 	trap_Cvar_Set( "cg_messageType", "" );
+	//trap_Cvar_Set( "cg_messagePlayer", "" );
 	 
 	// don't send empty messages
 	if( messageText[ 0 ] == '\0' )
-	{
 		return;
-	}
 	
-	if (messageType == 2) // team say
-	{
+	// team say
+	if( messageType == 2 ) {
 		trap_SendConsoleCommand( va( "say_team \"%s\"\n", messageText ) );
-	}
-	else if (messageType == 3) // fireteam say
-	{
+		
+	// fireteam say
+	} else if( messageType == 3 ) {
 		trap_SendConsoleCommand( va( "say_buddy \"%s\"\n", messageText ) );
-	}
-	else // normal say
-	{
+	
+	// normal say
+	} else {
 		trap_SendConsoleCommand( va( "say \"%s\"\n", messageText ) );
 	}
 }
 
-/**
- * @brief CG_SetWeaponCrosshair_f
- */
-static void CG_SetWeaponCrosshair_f(void)
-{
+
+
+static void CG_SetWeaponCrosshair_f( void ) {
 	char crosshair[64];
 
 	trap_Argv( 1, crosshair, 64 );
 	cg.newCrosshairIndex = atoi( crosshair ) + 1;
 }
+// -NERVE - SMF
 
-/**
- * @brief CG_SelectBuddy_f
- */
-static void CG_SelectBuddy_f(void)
-{
+static void CG_SelectBuddy_f( void ) {
 	int pos = atoi( CG_Argv( 1 ) );
 	int i;
 	clientInfo_t* ci;
 
-	// 0 - 7 = select that person
+	if( !CG_IsOnFireteam( cg.clientNum ) ) {
+		return; // Gordon: we aren't a leader, so dont allow selection
+	}
+
+	// Gordon:
+	// 0 - 5 = select that person
 	// -1 = none
 	// -2 = all
-	switch (pos)
-	{
-	case 0:
-	case 1:
-	case 2:
-	case 3:
-	case 4:
-	case 5:
-	case 6:
-	case 7:
-		if (!CG_IsOnFireteam(cg.clientNum))
-		{
-			break;     // we aren't a leader, so dont allow selection
-		}
 
-		ci = CG_SortedFireTeamPlayerForPosition(pos);
-		if (!ci)
-		{
-			break;     // there was no-one in this position
-		}
-
-		ci->selected ^= qtrue;
-		break;
-
+	switch( pos ) {
 		case -1:
-		if (!CG_IsOnFireteam(cg.clientNum))
-		{
-			break;     // we aren't a leader, so dont allow selection
-		}
-
-		for (i = 0; i < MAX_FIRETEAM_MEMBERS; i++)
-		{
+			for(i = 0; i < MAX_FIRETEAM_MEMBERS; i++) {
 				ci = CG_SortedFireTeamPlayerForPosition( i );
-			if (!ci)
-			{
-				break;     // there was no-one in this position
+				if( !ci ) {
+					return; // there was no-one in this position
 				}
 
 				ci->selected = qfalse;
 			}
-		break;
+			return;
 
 		case -2:
-		if (!CG_IsOnFireteam(cg.clientNum))
-		{
-			break;     // we aren't a leader, so dont allow selection
-		}
-
-		for (i = 0; i < MAX_FIRETEAM_MEMBERS; i++)
-		{
+			for(i = 0; i < MAX_FIRETEAM_MEMBERS; i++) {
 				ci = CG_SortedFireTeamPlayerForPosition( i );
-			if (!ci)
-			{
-				break;     // there was no-one in this position
+				if(!ci) {
+					return; // there was no-one in this position
 				}
 
 				ci->selected = qtrue;
 			}
-		break;
+			return;
 	}
+	if( pos >= MAX_FIRETEAM_MEMBERS || pos < 0)
+		return;
+
+	ci = CG_SortedFireTeamPlayerForPosition( pos );
+	if( !ci ) {
+		return; // there was no-one in this position
+	}
+	ci->selected ^= qtrue;
 }
 
 extern void CG_AdjustAutomapZoom(int zoomIn);
 
-/**
- * @brief CG_AutomapZoomIn_f
- */
-static void CG_AutomapZoomIn_f(void)
-{
-	if (!cgs.autoMapOff)
-	{
+static void CG_AutomapZoomIn_f(void) {
+	if( !cgs.autoMapOff ) {
 		CG_AdjustAutomapZoom(qtrue);
 	}
 }
 
-/**
- * @brief CG_AutomapZoomOut_f
- */
-static void CG_AutomapZoomOut_f(void)
-{
-	if (!cgs.autoMapOff)
-	{
+static void CG_AutomapZoomOut_f(void) {
+	if( !cgs.autoMapOff ) {
 		CG_AdjustAutomapZoom(qfalse);
 	}
 }
 
-/**
- * @brief CG_AutomapExpandDown_f
- */
-static void CG_AutomapExpandDown_f(void)
-{
-	if (!cgs.autoMapExpanded)
-	{
+static void CG_AutomapExpandDown_f( void ) {
+	if( !cgs.autoMapExpanded ) {
 		cgs.autoMapExpanded = qtrue;
-		if( cg.time - cgs.autoMapExpandTime < 250.f ) 
-{
+		if( cg.time - cgs.autoMapExpandTime < 250.f ) {
 			cgs.autoMapExpandTime = cg.time - ( 250.f - ( cg.time - cgs.autoMapExpandTime ) );
-		}
-        else 
-        {
+		} else {
 			cgs.autoMapExpandTime = cg.time;
 		}
 	}
 }
 
-/**
- * @brief CG_AutomapExpandUp_f
- */
-static void CG_AutomapExpandUp_f(void)
-{
-	if (cgs.autoMapExpanded)
-	{
+static void CG_AutomapExpandUp_f( void ) {
+	if( cgs.autoMapExpanded ) {
 		cgs.autoMapExpanded = qfalse;
 		if( cg.time - cgs.autoMapExpandTime < 250.f ) {
 			cgs.autoMapExpandTime = cg.time - ( 250.f - ( cg.time - cgs.autoMapExpandTime ) );
-		} 
-        else 
-        {
+		} else {
 			cgs.autoMapExpandTime = cg.time;
 		}
 	}
 }
 
-/**
- * @brief CG_ToggleAutomap_f
- */
-static void CG_ToggleAutomap_f(void)
-{
-	cgs.autoMapOff = (qboolean) !cgs.autoMapOff;
+static void CG_ToggleAutomap_f( void ) {
+	cgs.autoMapOff = !cgs.autoMapOff;
 }
 
-const char *aMonths[12] =
-{
+// OSP
+const char *aMonths[12] = {
 	"Jan", "Feb", "Mar", "Apr", "May", "Jun",
 	"Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
 };
 
-/**
- * @brief CG_currentTime_f
- */
-void CG_currentTime_f(void)
-{
+void CG_currentTime_f( void ) {
 	qtime_t ct;
 
 	trap_RealTime(&ct);
-	CG_Printf("[cgnotify]Current time: ^3%02d:%02d:%02d (%02d %s %d)\n", ct.tm_hour, ct.tm_min, ct.tm_sec, ct.tm_mday, aMonths[ct.tm_mon], 1900 + ct.tm_year);
+	CG_Printf( "Current time: ^3%02d:%02d:%02d (%02d %s %d)\n", ct.tm_hour, ct.tm_min, ct.tm_sec, ct.tm_mday, aMonths[ct.tm_mon], 1900+ct.tm_year );
 }
 
 // Dynamically names a demo and sets up the recording
@@ -1042,156 +835,87 @@ void CG_autoRecord_f( void ) {
 	}
 }
 
-/**
- * @brief Dynamically names a screenshot[JPEG]
- */
+// Dynamically names a screenshot[JPEG]
 void CG_autoScreenShot_f(void)
 {
 	trap_SendConsoleCommand(va("screenshot%s %s\n", ((cg_useScreenshotJPEG.integer)?"JPEG":""), CG_generateFilename()));
 }
 
-/**
- * @brief CG_vstrDown_f
- */
 void CG_vstrDown_f(void)
 {
 	// The engine also passes back the key code and time of the key press
-	if (trap_Argc() == 5)
-	{
-		trap_SendConsoleCommand(va("vstr %s;", CG_Argv(1)));
-	}
-	else
-	{
-		CG_Printf("[cgnotify]Usage: +vstr [down_vstr] [up_vstr]\n");
-	}
+	if(trap_Argc() == 5) trap_SendConsoleCommand(va("vstr %s;", CG_Argv(1)));
+	else CG_Printf("Usage: +vstr [down_vstr] [up_vstr]\n");
 }
 
-/**
- * @brief CG_vstrUp_f
- */
 void CG_vstrUp_f(void)
 {
 	// The engine also passes back the key code and time of the key press
-	if (trap_Argc() == 5)
-	{
-		trap_SendConsoleCommand(va("vstr %s;", CG_Argv(2)));
-	}
-	else
-	{
-		CG_Printf("[cgnotify]Usage: +vstr [down_vstr] [up_vstr]\n");
-	}
+	if(trap_Argc() == 5) trap_SendConsoleCommand(va("vstr %s;", CG_Argv(2)));
+	else CG_Printf("Usage: +vstr [down_vstr] [up_vstr]\n");
 }
 
 void CG_keyOn_f(void)
 {
-	if (!cg.demoPlayback)
-	{
-		CG_Printf("[cgnotify]^3*** NOT PLAYING A DEMO!!\n");
+	if(!cg.demoPlayback) {
+		CG_Printf("^3*** NOT PLAYING A DEMO!!\n");
 		return;
 	}
 
-	if (demo_infoWindow.integer > 0)
-	{
+	if(demo_infoWindow.integer > 0) {
 		CG_ShowHelp_On(&cg.demohelpWindow);
 	}
 
 	CG_EventHandling(CGAME_EVENT_DEMO, qtrue);
 }
 
-/**
- * @brief CG_keyOff_f
- */
 void CG_keyOff_f(void)
 {
-	if (!cg.demoPlayback)
-	{
-		return;
-	}
+	if(!cg.demoPlayback) return;
 	CG_EventHandling(CGAME_EVENT_NONE, qfalse);
 }
 
 void CG_dumpStats_f(void)
 {
-	if (cgs.dumpStatsTime < cg.time)
-	{
+	if(cgs.dumpStatsTime < cg.time) {
 		cgs.dumpStatsTime = cg.time + 2000;
-		trap_SendClientCommand(
-#ifdef FEATURE_MULTIVIEW
-			(cg.mvTotalClients < 1) ?
-#endif
-			"weaponstats"
-#ifdef FEATURE_MULTIVIEW
-			: "statsall"
-#endif
-			);
+		trap_SendClientCommand((cg.mvTotalClients < 1) ? "weaponstats" : "statsall");
 	}
 }
-
-/*
- * @brief CG_wStatsDown_f
- * @note Unused
 void CG_wStatsDown_f(void)
 {
-    if (
-#ifdef FEATURE_MULTIVIEW
-        cg.mvTotalClients < 1 &&
-#endif
-        cg.snap->ps.persistant[PERS_TEAM] == TEAM_SPECTATOR)
-    {
+	int i = (cg.mvTotalClients > 0) ? (cg.mvCurrentActive->mvInfo & MV_PID) : cg.snap->ps.clientNum;
+
+	if(cg.mvTotalClients < 1 && cg.snap->ps.persistant[PERS_TEAM] == TEAM_SPECTATOR) {
 		Pri("You must be a player or following a player to use +wstats\n");
 		return;
 	}
 
-    if (cg.statsRequestTime < cg.time)
-    {
-        int i =
-#ifdef FEATURE_MULTIVIEW
-            (cg.mvTotalClients > 0) ? (cg.mvCurrentActive->mvInfo & MV_PID) :
-#endif
-            cg.snap->ps.clientNum;
-
+	if(cg.statsRequestTime < cg.time) {
 		cg.statsRequestTime = cg.time + 500;
 		trap_SendClientCommand(va("wstats %d", i));
 	}
 
 	cg.showStats = qtrue;
 }
-*/
 
-/*
- * @brief CG_wStatsUp_f
- * @note unused
 void CG_wStatsUp_f(void)
 {
 	cg.showStats = qfalse;
 	CG_windowFree(cg.statsWindow);
 	cg.statsWindow = NULL;
 }
-*/
 
-#ifdef FEATURE_MULTIVIEW
-/**
- * @brief CG_toggleSpecHelp_f
- */
 void CG_toggleSpecHelp_f(void)
 {
-	if (cg.mvTotalClients > 0 && !cg.demoPlayback)
-	{
-		if (cg.spechelpWindow != SHOW_ON && cg_specHelp.integer > 0)
-		{
+	if(cg.mvTotalClients > 0 && !cg.demoPlayback) {
+		if(cg.spechelpWindow != SHOW_ON && cg_specHelp.integer > 0) {
 			CG_ShowHelp_On(&cg.spechelpWindow);
-		}
-		else if (cg.spechelpWindow == SHOW_ON)
-		{
+		} else if(cg.spechelpWindow == SHOW_ON) {
 			CG_ShowHelp_Off(&cg.spechelpWindow);
 		}
 	}
 }
-#endif
-
-/**
- * @brief CG_EditSpeakers_f
- */
 // -OSP
 
 void CG_Obj_f( void ) {
@@ -1200,16 +924,11 @@ void CG_Obj_f( void ) {
 
 static void CG_EditSpeakers_f( void )
 {
-	if (cg.editingSpeakers)
-	{
+	if( cg.editingSpeakers ) {
 		CG_DeActivateEditSoundMode();
-	}
-	else
-	{
+	} else {
 		const char *s = Info_ValueForKey( CG_ConfigString( CS_SYSTEMINFO ), "sv_cheats" );
-
-		if (s[0] != '1')
-		{
+		if ( s[0] != '1' ) {
 			CG_Printf( "editSpeakers is cheat protected.\n" );
 			return;
 		}
@@ -1217,9 +936,6 @@ static void CG_EditSpeakers_f( void )
 	}
 }
 
-/**
- * @brief CG_DumpSpeaker_f
- */
 static void CG_DumpSpeaker_f( void )
 {
 /*	char sscrfilename[MAX_QPATH];
@@ -1298,8 +1014,7 @@ static void CG_DumpSpeaker_f( void )
 	trace_t			tr;
 	vec3_t			end;
 
-	if (!cg.editingSpeakers)
-	{
+	if( !cg.editingSpeakers ) {
 		CG_Printf( "Speaker Edit mode needs to be activated to dump speakers\n" );
 		return;
 	}
@@ -1312,49 +1027,33 @@ static void CG_DumpSpeaker_f( void )
 	VectorMA( cg.refdef_current->vieworg, 32, cg.refdef_current->viewaxis[0], end );
 	CG_Trace( &tr, cg.refdef_current->vieworg, NULL, NULL, end, -1, MASK_SOLID );
 
-	if (tr.fraction < 1.f)
-	{
+	if( tr.fraction < 1.f ) {
 		VectorCopy( tr.endpos, speaker.origin );
 		VectorMA( speaker.origin, -4, cg.refdef_current->viewaxis[0], speaker.origin );
-	}
-	else
-	{
+	} else {
 		VectorCopy( tr.endpos, speaker.origin );
 	}
 
-	if (!BG_SS_StoreSpeaker(&speaker))
-	{
+	if( !BG_SS_StoreSpeaker( &speaker ) ) {
 		CG_Printf( S_COLOR_RED "ERROR: Failed to store speaker\n" );
 	}
 }
 
-/**
- * @brief CG_ModifySpeaker_f
- */
 static void CG_ModifySpeaker_f( void )
 {
-	if (cg.editingSpeakers)
-	{
+	if( cg.editingSpeakers ) {
 		CG_ModifyEditSpeaker();
 	}
 }
 
-/**
- * @brief CG_UndoSpeaker_f
- */
 static void CG_UndoSpeaker_f( void )
 {
-	if (cg.editingSpeakers)
-	{
+	if( cg.editingSpeakers ) {
 		CG_UndoEditSpeaker();
 	}
 }
 
-/**
- * @brief CG_ForceTapOut_f
- */
-void CG_ForceTapOut_f(void)
-{
+void CG_ForceTapOut_f( void ) {
 	trap_SendClientCommand( "forcetapout" );
 }
 
@@ -1468,9 +1167,7 @@ void CG_TimerSet_f( void )
 		}
 	}
 	else
-	{
 		CG_Printf("Usage: timerSet [seconds]\n");
-}
 }
 
 // flms: etpro style timer resetting
@@ -1492,514 +1189,6 @@ typedef struct {
 	char	*cmd;
 	void	(*function)(void);
 } consoleCommand_t;
-/**
- * @brief CG_GetSecondaryWeapon
- * @param[in] weapon
- * @param[in] team
- * @param[in] playerclass
- * @return
- */
-static int CG_GetSecondaryWeapon(int weapon, team_t team, int playerclass)
-{
-	int outputWeapon;
-
-	if (cgs.clientinfo[cg.clientNum].skill[SK_HEAVY_WEAPONS] >= 4 && playerclass == PC_SOLDIER)
-	{
-		switch (weapon)
-		{
-		case 1:
-			outputWeapon = (team == TEAM_AXIS) ? WP_LUGER : WP_COLT;
-			break;
-		case 2:
-			if (cgs.clientinfo[cg.clientNum].skill[SK_LIGHT_WEAPONS] >= 4)
-			{
-				outputWeapon = (team == TEAM_AXIS) ? WP_AKIMBO_LUGER : WP_AKIMBO_COLT;
-			}
-			else
-			{
-				outputWeapon = (team == TEAM_AXIS) ? WP_MP40 : WP_THOMPSON;
-			}
-			break;
-		case 3:
-		default:
-			outputWeapon = (team == TEAM_AXIS) ? WP_MP40 : WP_THOMPSON;
-			break;
-		}
-	}
-	else if (cgs.clientinfo[cg.clientNum].skill[SK_LIGHT_WEAPONS] >= 4)
-	{
-		switch (weapon)
-		{
-		case 1:
-			goto single_pistol;
-		case 2:
-		default:
-			goto akimbo_pistols;
-		}
-	}
-	else
-	{
-		goto single_pistol;
-	}
-
-	return outputWeapon;
-
-single_pistol:
-	if (playerclass == PC_COVERTOPS)
-	{
-		outputWeapon = (team == TEAM_AXIS) ? WP_SILENCER : WP_SILENCED_COLT;
-	}
-	else
-	{
-		outputWeapon = (team == TEAM_AXIS) ? WP_LUGER : WP_COLT;
-	}
-	return outputWeapon;
-
-akimbo_pistols:
-	if (playerclass == PC_COVERTOPS)
-	{
-		outputWeapon = (team == TEAM_AXIS) ? WP_AKIMBO_SILENCEDLUGER : WP_AKIMBO_SILENCEDCOLT;
-	}
-	else
-	{
-		outputWeapon = (team == TEAM_AXIS) ? WP_AKIMBO_LUGER : WP_AKIMBO_COLT;
-	}
-	return outputWeapon;
-}
-
-/**
- * @brief class change menu
- */
-void CG_ClassMenu_f(void)
-{
-	if(cgs.clientinfo[cg.clientNum].team == TEAM_SPECTATOR)
-	{
-		return;
-	}
-
-	CG_EventHandling(CGAME_EVENT_NONE, qfalse);
-
-	if(cg_quickMessageAlt.integer)
-	{
-		trap_UI_Popup(UIMENU_WM_CLASSALT);
-	}
-	else
-	{
-		trap_UI_Popup(UIMENU_WM_CLASS);
-	}
-}
-
-/**
- * @brief Sends a class setup message. Enables etpro like class scripts
- */
-void CG_Class_f(void)
-{
-	char             cls[64];
-	const char       *classtype, *teamstring;
-	int              weapon1, weapon2, playerclass;
-	bg_playerclass_t *classinfo;
-	team_t           team;
-
-	if (cg.demoPlayback)
-	{
-		return;
-	}
-
-	team = cgs.clientinfo[cg.clientNum].team;
-
-	if (team == TEAM_SPECTATOR)
-	{
-		return;
-	}
-
-	if (trap_Argc() < 2)
-	{
-		CG_Printf("Invalid command format.\n");
-		return;
-	}
-
-	// TODO: handle missing case ?
-	switch (team)
-	{
-	case TEAM_AXIS:
-		classtype  = "r";
-		teamstring = CG_TranslateString("Axis");
-		break;
-	case TEAM_ALLIES:
-		classtype  = "b";
-		teamstring = CG_TranslateString("Allies");
-		break;
-	default:
-		CG_Printf("Invalid team.\n");
-		return;
-	}
-
-	trap_Argv(1, cls, 64);
-
-	if (!Q_stricmp(cls, "s") || !Q_stricmp(cls, "0"))
-	{
-		playerclass = PC_SOLDIER;
-	}
-	else if (!Q_stricmp(cls, "m") || !Q_stricmp(cls, "1"))
-	{
-		playerclass = PC_MEDIC;
-	}
-	else if (!Q_stricmp(cls, "e") || !Q_stricmp(cls, "2"))
-	{
-		playerclass = PC_ENGINEER;
-	}
-	else if (!Q_stricmp(cls, "f") || !Q_stricmp(cls, "3"))
-	{
-		playerclass = PC_FIELDOPS;
-	}
-	else if (!Q_stricmp(cls, "c") || !Q_stricmp(cls, "4"))
-	{
-		playerclass = PC_COVERTOPS;
-	}
-	else
-	{
-		CG_Printf("Invalid class format.\n");
-		return;
-	}
-
-	classinfo = BG_GetPlayerClassInfo(team, playerclass);
-
-	if (trap_Argc() > 2)
-	{
-		trap_Argv(2, cls, 64);
-		weapon1 = atoi(cls);
-		if (weapon1 <= 0 || weapon1 > MAX_WEAPS_PER_CLASS)
-		{
-			weapon1 = classinfo->classWeapons[0];
-		}
-		else if (!classinfo->classWeapons[weapon1 - 1])
-		{
-			CG_Printf("Invalid command format for weapon.\n");
-			return;
-		}
-		else
-		{
-			weapon1 = classinfo->classWeapons[weapon1 - 1];
-		}
-	}
-	else
-	{
-		weapon1 = classinfo->classWeapons[0];
-	}
-
-	if (trap_Argc() > 3)
-	{
-		trap_Argv(3, cls, 64);
-		weapon2 = atoi(cls);
-		weapon2 = CG_GetSecondaryWeapon(weapon2, team, playerclass);
-	}
-	else
-	{
-		weapon2 = CG_GetSecondaryWeapon(-1, team, playerclass);
-	}
-
-	// Print out the selected class and weapon info
-	if (cgs.clientinfo[cg.clientNum].skill[SK_HEAVY_WEAPONS] >= 4 && playerclass == PC_SOLDIER && !Q_stricmp(weaponTable[weapon1].desc, weaponTable[weapon2].desc))
-	{
-		CG_PriorityCenterPrint(va(CG_TranslateString("You will spawn as an %s %s with a %s."), teamstring, BG_ClassnameForNumber(playerclass), weaponTable[weapon1].desc), 400, cg_fontScaleCP.value, -1);
-	}
-	else
-	{
-		switch (weapon2)
-		{
-		case WP_AKIMBO_COLT:
-		case WP_AKIMBO_LUGER:
-		case WP_AKIMBO_SILENCEDCOLT:
-		case WP_AKIMBO_SILENCEDLUGER:
-			CG_PriorityCenterPrint(va(CG_TranslateString("You will spawn as an %s %s with a %s and %s."), teamstring, BG_ClassnameForNumber(playerclass), weaponTable[weapon1].desc, weaponTable[weapon2].desc), 400, cg_fontScaleCP.value, -1);
-			break;
-		default:
-			CG_PriorityCenterPrint(va(CG_TranslateString("You will spawn as an %s %s with a %s and a %s."), teamstring, BG_ClassnameForNumber(playerclass), weaponTable[weapon1].desc, weaponTable[weapon2].desc), 400, cg_fontScaleCP.value, -1);
-			break;
-		}
-	}
-	// Send the switch command to the server
-	trap_SendClientCommand(va("team %s %i %i %i\n", classtype, playerclass, weapon1, weapon2));
-}
-
-/**
- * @brief CG_ReadHuds_f
- */
-void CG_ReadHuds_f(void)
-{
-	CG_ReadHudScripts();
-}
-
-#ifdef FEATURE_EDV
-/**
- * @brief CG_FreecamTurnLeftDown_f
- */
-void CG_FreecamTurnLeftDown_f(void)
-{
-	cgs.demoCamera.turn |= 0x01;
-}
-
-/**
- * @brief CG_FreecamTurnLeftUp_f
- */
-void CG_FreecamTurnLeftUp_f(void)
-{
-	cgs.demoCamera.turn &= ~0x01;
-}
-
-/**
- * @brief CG_FreecamTurnRightDown_f
- */
-void CG_FreecamTurnRightDown_f(void)
-{
-	cgs.demoCamera.turn |= 0x02;
-}
-
-/**
- * @brief CG_FreecamTurnRightUp_f
- */
-void CG_FreecamTurnRightUp_f(void)
-{
-	cgs.demoCamera.turn &= ~0x02;
-}
-
-/**
- * @brief CG_FreecamTurnDownDown_f
- */
-void CG_FreecamTurnDownDown_f(void)
-{
-	cgs.demoCamera.turn |= 0x04;
-}
-
-/**
- * @brief CG_FreecamTurnDownUp_f
- */
-void CG_FreecamTurnDownUp_f(void)
-{
-	cgs.demoCamera.turn &= ~0x04;
-}
-
-/**
- * @brief CG_FreecamTurnUpDown_f
- */
-void CG_FreecamTurnUpDown_f(void)
-{
-	cgs.demoCamera.turn |= 0x08;
-}
-
-/**
- * @brief CG_FreecamTurnUpUp_f
- */
-void CG_FreecamTurnUpUp_f(void)
-{
-	cgs.demoCamera.turn &= ~0x08;
-}
-
-/**
- * @brief CG_FreecamRollLeftDown_f
- */
-void CG_FreecamRollLeftDown_f(void)
-{
-	cgs.demoCamera.turn |= 0x20;
-}
-
-/**
- * @brief CG_FreecamRollLeftUp_f
- */
-void CG_FreecamRollLeftUp_f(void)
-{
-	cgs.demoCamera.turn &= ~0x20;
-}
-
-/**
- * @brief CG_FreecamRollRightDown_f
- */
-void CG_FreecamRollRightDown_f(void)
-{
-	cgs.demoCamera.turn |= 0x10;
-}
-
-/**
- * @brief CG_FreecamRollRightUp_f
- */
-void CG_FreecamRollRightUp_f(void)
-{
-	cgs.demoCamera.turn &= ~0x10;
-}
-
-/**
- * @brief CG_Freecam_f
- */
-void CG_Freecam_f(void)
-{
-	char state[MAX_TOKEN_CHARS];
-
-	if (!cg.demoPlayback)
-	{
-		CG_Printf("Not playing a demo.\n");
-		return;
-	}
-
-	trap_Argv(1, state, sizeof(state));
-
-	if (!Q_stricmp(state, "on"))
-	{
-		cgs.demoCamera.renderingFreeCam = qtrue;
-	}
-	else if (!Q_stricmp(state, "off"))
-	{
-		cgs.demoCamera.renderingFreeCam = qfalse;
-	}
-	else
-	{
-		cgs.demoCamera.renderingFreeCam ^= qtrue;
-	}
-
-	CG_Printf("freecam %s\n", cgs.demoCamera.renderingFreeCam ? "ON" : "OFF");
-
-	if (cgs.demoCamera.renderingFreeCam)
-	{
-		int viewheight;
-
-		if (cg.snap->ps.eFlags & EF_CROUCHING)
-		{
-			viewheight = CROUCH_VIEWHEIGHT;
-		}
-		else if (cg.snap->ps.eFlags & EF_PRONE || cg.snap->ps.eFlags & EF_PRONE_MOVING)
-		{
-			viewheight = PRONE_VIEWHEIGHT;
-		}
-		else
-		{
-			viewheight = DEFAULT_VIEWHEIGHT;
-		}
-		cgs.demoCamera.camOrigin[2] += viewheight;
-	}
-}
-
-/**
- * @brief CG_FreecamGetPos_f
- */
-void CG_FreecamGetPos_f(void)
-{
-	if (cg.demoPlayback)
-	{
-		CG_Printf("freecam origin: %.0f %.0f %.0f\n", (double)cgs.demoCamera.camOrigin[0], (double)cgs.demoCamera.camOrigin[1], (double)cgs.demoCamera.camOrigin[2]);
-	}
-	else
-	{
-		CG_Printf("freecam origin: %.0f %.0f %.0f\n", (double)cg.refdef_current->vieworg[0], (double)cg.refdef_current->vieworg[1], (double)cg.refdef_current->vieworg[2]);
-	}
-}
-
-/**
- * @brief etpro_float_Argv
- * @param[in] argnum
- * @return
- */
-float etpro_float_Argv(int argnum)
-{
-	char buffer[MAX_TOKEN_CHARS];
-
-	trap_Argv(argnum, buffer, sizeof(buffer));
-	return (float)atof(buffer);
-}
-
-/**
- * @brief CG_FreecamSetPos_f
- */
-void CG_FreecamSetPos_f(void)
-{
-	int n;
-
-	if (!cg.demoPlayback)
-	{
-		CG_Printf("Cheats must be enabled.\n");
-		return;
-	}
-
-	n = trap_Argc();
-	if (n < 4)
-	{
-		CG_Printf("^1Syntax: freecamSetPos x y z\n");
-		return;
-	}
-	if (n > 4 && n < 7)
-	{
-		CG_Printf("^1Syntax: freecamSetPos x y z pitch yaw roll\n");
-		return;
-	}
-
-	cgs.demoCamera.camOrigin[0] = etpro_float_Argv(1);
-	cgs.demoCamera.camOrigin[1] = etpro_float_Argv(2);
-	cgs.demoCamera.camOrigin[2] = etpro_float_Argv(3);
-
-	if (n >= 7)
-	{
-		cgs.demoCamera.camAngle[0]  = etpro_float_Argv(4);
-		cgs.demoCamera.camAngle[1]  = etpro_float_Argv(5);
-		cgs.demoCamera.camAngle[2]  = etpro_float_Argv(6);
-		cgs.demoCamera.setCamAngles = qtrue;
-	}
-	else
-	{
-		cgs.demoCamera.setCamAngles = qfalse;
-	}
-
-}
-
-/**
- * @brief noclip in demos
- */
-void CG_NoClip_f(void)
-{
-	char buffer[MAX_TOKEN_CHARS];
-	char state[MAX_TOKEN_CHARS];
-
-	trap_Argv(0, buffer, sizeof(buffer));
-	trap_Args(state, sizeof(state));
-
-	if (!cg.demoPlayback)
-	{
-		if (trap_Argc() > 1)
-		{
-			trap_SendClientCommand(va("noclip %s\n", state));
-		}
-		else
-		{
-			trap_SendClientCommand("noclip\n");
-		}
-	}
-	else
-	{
-		if (!Q_stricmp(state, "on"))
-		{
-			cgs.demoCamera.noclip = qtrue;
-		}
-		else if (!Q_stricmp(state, "off"))
-		{
-			cgs.demoCamera.noclip = qfalse;
-		}
-		else
-		{
-			cgs.demoCamera.noclip ^= qtrue;
-		}
-		CG_Printf("noclip %s\n", cgs.demoCamera.noclip ? "ON" : "OFF");
-	}
-}
-#endif
-
-void CG_PrintObjectiveInfo()
-{
-	int i;
-
-	CG_Printf("^2Objective Info\n");
-
-	for (i = 0; i < MAX_OID_TRIGGERS; i++)
-	{
-		CG_Printf("[%2i] %-26s -> num: %3i - spawnflags: %3i - objflags: %3i\n", i , cgs.oidInfo[i].name, cgs.oidInfo[i].entityNum, cgs.oidInfo[i].spawnflags, cgs.oidInfo[i].objflags);
-	}
-}
 
 static consoleCommand_t	commands[] =
  {
@@ -2071,7 +1260,7 @@ static consoleCommand_t	commands[] =
 	{ "currentTime",	CG_currentTime_f },
 	{ "keyoff",			CG_keyOff_f },
 	{ "keyon",			CG_keyOn_f },
-#ifdef FEATURE_MULTIVIEW
+#ifdef MV_SUPPORT
 	{ "mvactivate",		CG_mvToggleAll_f },
 	{ "mvdel",			CG_mvDelete_f },
 	{ "mvhide",			CG_mvHideView_f },
@@ -2119,34 +1308,8 @@ static consoleCommand_t	commands[] =
 
 	//quad: spawntimer
 	{ "timerSet", CG_TimerSet_f },
-	{ "timerReset",          CG_TimerReset_f           },
-	{ "resetTimer",          CG_TimerReset_f           }, // keep ETPro compatibility
-	{ "class",               CG_Class_f                },
-	{ "classmenu",           CG_ClassMenu_f            },
-	{ "readhuds",            CG_ReadHuds_f             },
-#ifdef FEATURE_EDV
-	{ "+freecam_turnleft",   CG_FreecamTurnLeftDown_f  },
-	{ "-freecam_turnleft",   CG_FreecamTurnLeftUp_f    },
-	{ "+freecam_turnright",  CG_FreecamTurnRightDown_f },
-	{ "-freecam_turnright",  CG_FreecamTurnRightUp_f   },
-
-	{ "+freecam_turnup",     CG_FreecamTurnUpDown_f    },
-	{ "-freecam_turnup",     CG_FreecamTurnUpUp_f      },
-	{ "+freecam_turndown",   CG_FreecamTurnDownDown_f  },
-	{ "-freecam_turndown",   CG_FreecamTurnDownUp_f    },
-
-	{ "+freecam_rollleft",   CG_FreecamRollLeftDown_f  },
-	{ "-freecam_rollleft",   CG_FreecamRollLeftUp_f    },
-	{ "+freecam_rollright",  CG_FreecamRollRightDown_f },
-	{ "-freecam_rollright",  CG_FreecamRollRightUp_f   },
-	{ "freecam",             CG_Freecam_f              },
-	{ "freecamsetpos",       CG_FreecamSetPos_f        },
-	{ "freecamgetpos",       CG_FreecamGetPos_f        },
-
-	{ "noclip",              CG_NoClip_f               },
-#endif
-	// objective info list for mappers/scripters (and players? - we might extend it)
-	{ "oinfo",               CG_PrintObjectiveInfo     }
+	{ "resetTimer", CG_ResetTimer_f },
+	
 };
 
 
@@ -2160,7 +1323,7 @@ Cmd_Argc() / Cmd_Argv()
 */
 qboolean CG_ConsoleCommand( void ) {
 	const char	*cmd;
-	unsigned int i;
+	int		i;
 
 	// Arnout - don't allow console commands until a snapshot is present
 	if ( !cg.snap ) {
@@ -2246,13 +1409,11 @@ Let the client system know about all of our commands
 so it can perform tab completion
 =================
 */
-void CG_InitConsoleCommands(void)
-{
-	unsigned int i;
+void CG_InitConsoleCommands( void ) {
+	int		i;
 	const char *s;
 
-	for (i = 0 ; i < sizeof(commands) / sizeof(commands[0]) ; i++)
-	{
+	for ( i = 0 ; i < sizeof( commands ) / sizeof( commands[0] ) ; i++ ) {
 		trap_AddCommand( commands[i].cmd );
 	}
 
@@ -2261,7 +1422,6 @@ void CG_InitConsoleCommands(void)
 	// forwarded to the server after they are not recognized locally
 	//
 	trap_AddCommand ("kill");
-	trap_AddCommand("say");
 	// CHRUKER: b011 - Doesn't exist
 	//trap_AddCommand ("say_limbo");
 	// CHRUKER: b011 - Doesn't exist
@@ -2297,7 +1457,7 @@ void CG_InitConsoleCommands(void)
 	// CHRUKER: b011 - Duplicate, look further up
 	//trap_AddCommand("follow");
 	trap_AddCommand("lock");
-#ifdef FEATURE_MULTIVIEW
+#ifdef MV_SUPPORT
 	trap_AddCommand("mvadd");
 	trap_AddCommand("mvaxis");
 	trap_AddCommand("mvallies");
@@ -2371,10 +1531,8 @@ void CG_InitConsoleCommands(void)
 	trap_AddCommand("sclogout");
 	trap_AddCommand("shoutcastlogin");
 	trap_AddCommand("shoutcastlogout");
-#ifdef FEATURE_LUA
 	trap_AddCommand("lua_status");
-#endif
-	trap_AddCommand("etlpub_version");
+	trap_AddCommand("etpub_version");
 
 	// tjw: remove engine commands
 	trap_RemoveCommand("+lookup");
@@ -2385,8 +1543,7 @@ void CG_InitConsoleCommands(void)
 	// kw : only allow configstrings command when cheats enabled
 	s = Info_ValueForKey( CG_ConfigString( CS_SYSTEMINFO ),
 							"sv_cheats" );
-	if (s[0] != '1')
-	{
+	if ( s[0] != '1' ) {
 		trap_RemoveCommand("configstrings");
 	}
 }
