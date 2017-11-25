@@ -9,7 +9,7 @@
 #include "bg_public.h"
 #include "g_public.h"
 //#include "g_threads.h"
-#include "etpub.h"
+#include "ETLpub.h"
 
 #include "../game/be_aas.h"
 
@@ -17,7 +17,7 @@
 
 // the "gameversion" client command will print this plus compile date
 #ifndef PRE_RELEASE_DEMO
-#define GAMEVERSION			"etpub"
+#define GAMEVERSION			"ETLpub"
 #else
 //#define GAMEVERSION			"You look like you need a monkey!"
 #define GAMEVERSION			"ettest"
@@ -834,7 +834,7 @@ typedef struct {
 	// tjw
 	int hitsounds;
 	qboolean slashKill;
-	int etpubc;
+	int ETLpubc;
 	int lastkilled_client;
 	int	lastrevive_client;
 	int	lastkiller_client;
@@ -1870,7 +1870,7 @@ void G_ShutdownGame( int restart );
 void G_mapvoteinfo_write( void );
 void G_mapvoteinfo_read( void );
 // pheno
-void etpub_version( gentity_t *ent );
+void ETLpub_version( gentity_t *ent );
 
 //
 // g_client.c
@@ -2297,11 +2297,11 @@ extern vmCvar_t g_killRating;
 extern vmCvar_t g_playerRating;
 extern vmCvar_t g_trackBehavior;
 
-// Unique ID to identify server with stats.etpub.org
-// this ID should be part of all stats.etpub.org posts
-extern vmCvar_t g_etpub_stats_id;
-// URL of the stats master. Defaults to http://stats.etpub.org/submit_game.php
-extern vmCvar_t g_etpub_stats_master_url;
+// Unique ID to identify server with stats.ETLpub.org
+// this ID should be part of all stats.ETLpub.org posts
+extern vmCvar_t g_ETLpub_stats_id;
+// URL of the stats master. Defaults to http://stats.ETLpub.org/submit_game.php
+extern vmCvar_t g_ETLpub_stats_master_url;
 // Post chats to this URL
 extern vmCvar_t g_httpPostURL_chat;
 // Post end of round kill rating and player rating to this URL
@@ -3299,12 +3299,12 @@ void G_IntermissionVoteTally( gentity_t *ent );
 #define ASBLOCK_GIVE_XP 32
 
 // forty - sudden death dynamite and dynamite chaining.
-// dyno counter requires at least etpubclient 20070213
+// dyno counter requires at least ETLpubclient 20070213
 #define DYNO_SUDDENDEATH 1
 #define DYNO_CHAIN 2
 #define DYNO_COUNTER 4
 #define DYNO_NO_TEAM_DISARM 8
-#define DYNO_ID 16 // Dens: requires ETPubclient >=20070719
+#define DYNO_ID 16 // Dens: requires ETLPubclient >=20070719
 
 // Perro - g_dmg flags for advanced combat options
 #define COMBAT_USE_HITLOC 1

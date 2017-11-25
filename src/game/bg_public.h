@@ -367,7 +367,7 @@ extern const unsigned int aReinfSeeds[MAX_REINFSEEDS];
 #define CS_ENDGAME_STATS				37
 #define CS_CHARGETIMES					38
 #define CS_FILTERCAMS					39
-#define CS_ETPUBINFO					40
+#define CS_ETLPUBINFO					40
 
 #define	CS_MODELS						64
 #define	CS_SOUNDS						( CS_MODELS +				MAX_MODELS					)
@@ -532,7 +532,7 @@ typedef struct {
 	qboolean wasDisoriented;
 	int knifeThrownTime;
 
-	int etpubc;
+	int ETLpubc;
 
 } pmoveExt_t;	// data used both in client and server - store it here
 				// instead of playerstate to prevent different engine versions of playerstate between XP and MP
@@ -905,9 +905,9 @@ typedef enum {
 #define MISC_TRACEHEAD 32 // tjw: players can't put their heads in solids
 #define MISC_NO_FALL_DMG 64 // josh: for servers with huge double jumps
 #define MISC_ANNOUNCE_REV 128 // forty - #381 - Announce Revives
-#define MISC_TRACE_ALL 256 // forty - http://etpub.org/e107_plugins/forum/forum_viewtopic.php?11646
-#define MISC_OLD_PRONE 512 // forty - http://etpub.org/e107_plugins/forum/forum_viewtopic.php?11646
-#define MISC_OLD_MAXZ 1024 // forty - http://etpub.org/e107_plugins/forum/forum_viewtopic.php?11646
+#define MISC_TRACE_ALL 256 // forty - http://ETLpub.org/e107_plugins/forum/forum_viewtopic.php?11646
+#define MISC_OLD_PRONE 512 // forty - http://ETLpub.org/e107_plugins/forum/forum_viewtopic.php?11646
+#define MISC_OLD_MAXZ 1024 // forty - http://ETLpub.org/e107_plugins/forum/forum_viewtopic.php?11646
 #define MISC_INSTANTSPAWN 2048 // pheno: players spawn instantly
 #define MISC_ADRENALINE 4096 // pheno: each class receives adrenaline
 #define MISC_NODAMAGE 8192 // pheno: no damage on players

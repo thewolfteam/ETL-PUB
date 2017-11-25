@@ -3965,7 +3965,7 @@ qboolean G_shrubbot_giba(gentity_t *ent, int skiparg)
     return qtrue;\
   }
 
-// panzerwar and sniperwar by CHAOS as per http://www.etpub.org/e107_plugins/forum/forum_viewtopic.php?20809
+// panzerwar and sniperwar by CHAOS as per http://www.ETLPUB.org/e107_plugins/forum/forum_viewtopic.php?20809
 // macro/changes by elf
 WAR(panzer)
 // sniperwar command
@@ -4021,8 +4021,8 @@ qboolean G_shrubbot_userinfo(gentity_t *ent, int skiparg)
 	}
 
 	SPC(va("^/Userinfo of user ^7%s", vic->client->pers.netname));
-	SPC(va("^/Slot Number: ^d%i    ^/ETPub Client: ^d%s",vic-g_entities, (vic->r.svFlags & SVF_BOT)?
-		"Bot" : (vic->client->pers.etpubc > 0)? va("%i",vic->client->pers.etpubc):"No"));
+	SPC(va("^/Slot Number: ^d%i    ^/ETLPub Client: ^d%s",vic-g_entities, (vic->r.svFlags & SVF_BOT)?
+		"Bot" : (vic->client->pers.ETLpubc > 0)? va("%i",vic->client->pers.ETLpubc):"No"));
 
 	trap_GetUserinfo( vic-g_entities, userinfo, sizeof( userinfo ) );
 	temp = Info_ValueForKey(userinfo, "cl_guid");

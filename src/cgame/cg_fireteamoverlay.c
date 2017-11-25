@@ -444,7 +444,7 @@ void CG_DrawFireTeamOverlay( rectDef_t* rect ) {
 		
 		// quad: draw latched class
 		// pheno: not with an old server, that doesn't send the latched class
-		if( ci->cls != ci->latchClass && cgs.etpub > ETPUB_VERSION( 0, 8, 1 ) ) {
+		if( ci->cls != ci->latchClass && cgs.ETLpub > ETLPUB_VERSION( 0, 8, 1 ) ) {
 			//draw separator
 			CG_Text_Paint_Ext( x, y + FT_BAR_HEIGHT, .2f, .2f, colorYellow, ">", 0, 0, ITEM_TEXTSTYLE_SHADOWED, &cgs.media.font3 );
 			x += 10;

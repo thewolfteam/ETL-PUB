@@ -738,7 +738,7 @@ static const gentity_field_t gclient_fields[] = {
 	_et_gclient_addfieldalias(	sess.team_damage,				sess.team_damage_given,		FIELD_INT,			0										),
 	_et_gclient_addfieldalias(	sess.team_received,				sess.team_damage_received,	FIELD_INT,			0										),
 
-	// New to ETPub:
+	// New to ETLPub:
 	_et_gclient_addfield(		sess.guid,													FIELD_STRING,		FIELD_FLAG_NOPTR + FIELD_FLAG_READONLY	),
 	_et_gclient_addfield(		sess.ip,													FIELD_STRING,		FIELD_FLAG_NOPTR + FIELD_FLAG_READONLY	),
 	_et_gclient_addfield(		sess.mac,													FIELD_STRING,		FIELD_FLAG_NOPTR + FIELD_FLAG_READONLY	),
@@ -749,7 +749,7 @@ static const gentity_field_t gclient_fields[] = {
 	_et_gclient_addfield(		sess.dstreak,												FIELD_INT,			FIELD_FLAG_READONLY						),
 	_et_gclient_addfield(		sess.rstreak,												FIELD_INT,			FIELD_FLAG_READONLY						),
 	_et_gclient_addfield(		sess.shoutcaster,											FIELD_INT,			0										),
-	_et_gclient_addfield(		pers.etpubc,												FIELD_INT,			FIELD_FLAG_READONLY						),
+	_et_gclient_addfield(		pers.ETLpubc,												FIELD_INT,			FIELD_FLAG_READONLY						),
 	_et_gclient_addfield(		pers.lastkilled_client,										FIELD_INT,			FIELD_FLAG_READONLY						),
 	_et_gclient_addfield(		pers.lastrevive_client,										FIELD_INT,			FIELD_FLAG_READONLY						),
 	_et_gclient_addfield(		pers.lastkiller_client,										FIELD_INT,			FIELD_FLAG_READONLY						),

@@ -612,7 +612,7 @@ char *G_createStats(gentity_t *refEnt, gentity_t *reqEnt)
 	//          This is what the client expects.
 	if(dwWeaponMask != 0) {
 		// Dens: only show seperated teamdamge to newer clients (logging too of course)
-		if(!reqEnt || (reqEnt->client->pers.etpubc > 20060818)){
+		if(!reqEnt || (reqEnt->client->pers.ETLpubc > 20060818)){
 			Q_strcat(strWeapInfo, sizeof(strWeapInfo), va(" %d %d %d %d",
 				refEnt->client->sess.damage_given,
 				refEnt->client->sess.damage_received,

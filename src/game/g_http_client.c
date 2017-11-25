@@ -604,4 +604,4 @@ void *libhttpc_postmatch(void *post_args) {
 	free(post_matchinfo);
 	return 0;
 }
-// etded +set com_hunkmegs 256 +set sv_maxclients 64 +set fs_game etpub +set net_port 5123 +map oasis +set g_etpub_stats_id 0 +set g_tactics 1 +set g_warmup 10 +set g_log etserver.log +set g_logsync 1
+// etded +set com_hunkmegs 256 +set sv_maxclients 64 +set fs_game ETLpub +set net_port 5123 +map oasis +set g_ETLpub_stats_id 0 +set g_tactics 1 +set g_warmup 10 +set g_log etserver.log +set g_logsync 1

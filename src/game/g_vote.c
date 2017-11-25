@@ -1427,8 +1427,8 @@ void G_IntermissionMapVote( gentity_t *ent )
 		return;
 	}
 	
-	if ( ent->client->pers.etpubc <= 20060310 ) {
-		CP(va("print \"^3Invalid version of etpub_client\n\""));
+	if ( ent->client->pers.ETLpubc <= 20060310 ) {
+		CP(va("print \"^3Invalid version of ETLpub_client\n\""));
 		return;
 	}
 
@@ -1477,7 +1477,7 @@ void G_IntermissionMapList( gentity_t *ent )
 
 	if ( g_gametype.integer != GT_WOLF_MAPVOTE ||
 			!level.intermissiontime || 
-			ent->client->pers.etpubc <= 20060310 )
+			ent->client->pers.ETLpubc <= 20060310 )
 		return;
 
 	maxMaps = g_maxMapsVotedFor.integer;
@@ -1509,7 +1509,7 @@ void G_IntermissionVoteTally( gentity_t *ent )
 
 	if ( g_gametype.integer != GT_WOLF_MAPVOTE ||
 			!level.intermissiontime || 
-			ent->client->pers.etpubc <= 20060310 )
+			ent->client->pers.ETLpubc <= 20060310 )
 		return;
 
 	maxMaps = g_maxMapsVotedFor.integer;

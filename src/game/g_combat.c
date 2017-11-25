@@ -1378,7 +1378,7 @@ void G_doHitSound(gentity_t *attacker, int index)
 {
 	const char *sound = "";
 
-	if (attacker->client->pers.etpubc <= 20100628) {
+	if (attacker->client->pers.ETLpubc <= 20100628) {
 		// server
 		switch (index) {
 			case HITSOUND_DEFAULT:
@@ -1420,7 +1420,7 @@ void G_HitSound(gentity_t *targ, gentity_t *attacker, int mod, qboolean gib, qbo
 
 	// pheno: make sure to reset PERS_HITSOUND because changing hitsound
 	//        options server and/or client side within a running game
-	if (attacker->client->pers.etpubc > 20100628) {
+	if (attacker->client->pers.ETLpubc > 20100628) {
 		attacker->client->ps.persistant[PERS_HITSOUND] = HITSOUND_NONE;
 	}
 

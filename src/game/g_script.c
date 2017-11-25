@@ -821,11 +821,11 @@ void G_Script_ScriptEvent( gentity_t *ent, char *eventStr, char *params )
 	// pheno: log script trigger stolen & returned actions (ETPro behavior)
 	if ( !Q_stricmp(eventStr, "trigger") ) {
 		 if ( !Q_stricmp(params, "stolen") ) {
-			 G_LogPrintf("etpub popup: %s stole \"%s\"\n",
+			 G_LogPrintf("ETLpub popup: %s stole \"%s\"\n",
 				 Q_stricmp(ent->classname, "team_CTF_redflag") ? "axis" : "allies",
 				 ent->message);
 		 } else if ( !Q_stricmp(params, "returned") ) {
-			 G_LogPrintf("etpub popup: %s returned \"%s\"\n",
+			 G_LogPrintf("ETLpub popup: %s returned \"%s\"\n",
 				 Q_stricmp(ent->classname, "team_CTF_redflag") ? "allies" : "axis",
 				 ent->message);
 		 }
@@ -848,7 +848,7 @@ void G_Script_ScriptEvent( gentity_t *ent, char *eventStr, char *params )
 			eventStr);
 
 		// pheno: log script defused actions (ETPro behavior)
-		G_LogPrintf("etpub popup: %s defused \"%s\"\n",
+		G_LogPrintf("ETLpub popup: %s defused \"%s\"\n",
 			params,
 			ent->parent ? ent->parent->track : ent->track);
 	}
@@ -859,7 +859,7 @@ void G_Script_ScriptEvent( gentity_t *ent, char *eventStr, char *params )
 			eventStr);
 
 		// pheno: log script dynamited actions (ETPro behavior)
-		G_LogPrintf("etpub popup: %s planted \"%s\"\n",
+		G_LogPrintf("ETLpub popup: %s planted \"%s\"\n",
 			params,
 			ent->parent ? ent->parent->track : ent->track);
 	}

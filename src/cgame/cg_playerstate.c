@@ -390,7 +390,7 @@ void CG_CheckLocalSounds( playerState_t *ps, playerState_t *ops ) {
 		ps->persistant[PERS_HITS] != ops->persistant[PERS_HITS] &&
 		ps->persistant[PERS_HITS] != 0 && // fix hitsound on PERS_HITS reset
 		ps->persistant[PERS_HITSOUND] && // fix hitsound after changing hitsound options
-		cgs.etpub > ETPUB_VERSION(0, 9, 1)) {
+		cgs.ETLpub > ETLPUB_VERSION(0, 9, 1)) {
 		trap_S_StartSound(NULL, ps->clientNum, CHAN_AUTO, cgs.media.hitSound[ps->persistant[PERS_HITSOUND] - 1]);
 	}
 

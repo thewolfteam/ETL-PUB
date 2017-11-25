@@ -2070,7 +2070,7 @@ evilbanigoto:
 				// For dynamic light pulsing
 				traceEnt->s.effect1Time = level.time;
 
-				// Dens: Dyna id requires ETPubclient >= 20070719
+				// Dens: Dyna id requires ETLPubclient >= 20070719
 				if(g_dyno.integer & DYNO_ID) {
 					traceEnt->s.otherEntityNum = ent->s.number;
 				} else {

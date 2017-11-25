@@ -294,7 +294,7 @@ void CG_DrawConnectScreen( qboolean interactive, qboolean forcerefresh ) {
 
 		y = 322;
 		CG_Text_Paint_Centred_Ext( 540, y, 0.22f, 0.22f, clr3,
-			"etpubc " ETPUBC_VERSION,
+			"ETLpubc " ETLPUBC_VERSION,
 			0, 0, 0, &bg_loadscreenfont1 );
 		
 		y = 340;

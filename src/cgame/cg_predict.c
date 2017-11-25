@@ -1087,7 +1087,7 @@ void CG_PredictPlayerState( void ) {
 	// we check for cg_latentCmds because it'll mess up the optimization
 	// FIXME: make cg_latentCmds work with cg_optimizePrediction?
 
-	// forty - no cg_latentCmds in etpub
+	// forty - no cg_latentCmds in ETLpub
 	if ( cg_optimizePrediction.integer /*&& !cg_latentCmds.integer*/ ) {
 		if ( cg.nextFrameTeleport || cg.thisFrameTeleport ) {
 			// do a full predict
@@ -1277,7 +1277,7 @@ void CG_PredictPlayerState( void ) {
 		//unlagged - optimized prediction
 		// we check for cg_latentCmds because it'll mess up the optimization
 
-		// forty - no cg_latentCmds in etpub
+		// forty - no cg_latentCmds in ETLpub
 		if ( cg_optimizePrediction.integer /*&& !cg_latentCmds.integer*/ ) {
 			// if we need to predict this command, or we've run out of space in the saved states queue
 			if ( cmdNum >= predictCmd || (stateIndex + 1) % MAX_BACKUP_STATES == cg.backupStateTop ) {

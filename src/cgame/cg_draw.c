@@ -1323,7 +1323,7 @@ void CG_BannerPrint( const char *str ) {
 	for ( i = 0, textlen = 0; i < len; i++, textlen++) {
 
 		// "\n" in center/banner prints are seen as new lines.
-		// kw: this is also done serverside in etpub
+		// kw: this is also done serverside in ETLpub
 		if ( cg.bannerPrint[i] == '\\' && cg.bannerPrint[i+1] == 'n' ) {
 			Q_strncpyz( buff, &cg.bannerPrint[i+2], sizeof(buff));
 			cg.bannerPrint[i] = '\n';
@@ -1527,7 +1527,7 @@ void CG_PriorityCenterPrint( const char *str, int y, int charWidth, int priority
 	for ( i = 0, textlen = 0; i < len; i++, textlen++) {
 
 		// "\n" in center/banner prints are seen as new lines.
-		// kw: this is also done serverside in etpub
+		// kw: this is also done serverside in ETLpub
 		if ( cg.centerPrint[i] == '\\' && cg.centerPrint[i+1] == 'n' ) {
 			Q_strncpyz( buff, &cg.centerPrint[i+2], sizeof(buff));
 			cg.centerPrint[i] = '\n';
@@ -2240,7 +2240,7 @@ void CG_ScanForCrosshairMine(centity_t *cent) {
 	trace_t      trace;
 	vec3_t      start, end;
 
-	if(cgs.etpub < ETPUB_VERSION(0,7,0)) {
+	if(cgs.ETLpub < ETLPUB_VERSION(0,7,0)) {
 		cg.crosshairMine = -1;
 		return;
 	}
@@ -2283,7 +2283,7 @@ void CG_ScanForCrosshairDyna(centity_t *cent) {
 	trace_t      trace;
 	vec3_t      start, end;
 
-	if(cgs.etpub < ETPUB_VERSION(0,8,0)) {
+	if(cgs.ETLpub < ETLPUB_VERSION(0,8,0)) {
 		cg.crosshairDyna = -1;
 		return;
 	}
@@ -2645,7 +2645,7 @@ static void CG_DrawCrosshairNames( void ) {
 				if( cg.crosshairClientNum == cg.snap->ps.identifyClient ) {
 					playerHealth = cg.snap->ps.identifyClientHealth;
 				} else {
-					if(cgs.etpub >= ETPUB_VERSION(0,7,0)) {
+					if(cgs.ETLpub >= ETLPUB_VERSION(0,7,0)) {
 						// kw: In etmain enemy health isn't send by tinfo,
 						//     but this is now fixed serverside.
 						playerHealth = cgs.clientinfo[ cg.crosshairClientNum ].health;
@@ -4748,12 +4748,12 @@ static int CG_PlayerAmmoValue( int *ammo, int *clips, int *akimboammo ) {
 		return weap;
 
 	// tjw: only show knife ammo if g_throwableKnives is enabled
-	// tjw: always draw knife ammo for etpub 0.6.0 through 0.6.2
+	// tjw: always draw knife ammo for ETLpub 0.6.0 through 0.6.2
 	//      since it's always enabled.
 	if(weap == WP_KNIFE &&
 		(cgs.throwableKnives <= 0 &&
-		!(cgs.etpub >= ETPUB_VERSION(0,6,0) &&
-		 cgs.etpub <= ETPUB_VERSION(0,6,2)))) {
+		!(cgs.ETLpub >= ETLPUB_VERSION(0,6,0) &&
+		 cgs.ETLpub <= ETLPUB_VERSION(0,6,2)))) {
 
 		return weap;
 	}
@@ -5344,7 +5344,7 @@ static void CG_DrawPlayerStats( void ) {
 
 	if(cg.hud.xp[0] >= 0) {
 		// pheno: redeye - XP overflow fix with servers > 0.8.2
-		if( cgs.etpub > ETPUB_VERSION( 0, 8, 2 ) ) {
+		if( cgs.ETLpub > ETLPUB_VERSION( 0, 8, 2 ) ) {
 			str = va( "%i", ( 32768 * cg.snap->ps.stats[STAT_XP_OVERFLOW] ) + cg.snap->ps.stats[STAT_XP] );
 		} else {
 			str = va( "%i", cg.snap->ps.stats[STAT_XP] );

@@ -615,10 +615,10 @@ cvarTable_t		cvarTable[] = {
 	{ &cg_specAlpha, "cg_specAlpha", "1.0", CVAR_ARCHIVE},
 
 	// pheno
-	{ NULL,	"cg_etpubcbuild", CPUSTRING " " __DATE__, CVAR_USERINFO | CVAR_ROM },
+	{ NULL,	"cg_ETLpubcbuild", CPUSTRING " " __DATE__, CVAR_USERINFO | CVAR_ROM },
 
 	// tjw
-	{ NULL,	"cg_etpubc", ETPUBC_VERSION, CVAR_USERINFO | CVAR_ROM },
+	{ NULL,	"cg_ETLpubc", ETLPUBC_VERSION, CVAR_USERINFO | CVAR_ROM },
 	{ &cg_font1, "cg_font1", "ariblk", CVAR_ARCHIVE },
 	{ &cg_font2, "cg_font2", "ariblk", CVAR_ARCHIVE },
 	{ &cg_font3, "cg_font3", "courbd", CVAR_ARCHIVE },
@@ -826,7 +826,7 @@ qboolean CG_BackupProfile(void)
 	Com_sprintf(cfgPath, sizeof(cfgPath),
 		"profiles/%s/%s", profile, CONFIG_NAME);
 	Com_sprintf(bakPath, sizeof(bakPath),
-		"profiles/%s/%s.etpub", profile, CONFIG_NAME);
+		"profiles/%s/%s.ETLpub", profile, CONFIG_NAME);
 
 	len = trap_FS_FOpenFile(bakPath, &bak, FS_READ);
 	trap_FS_FCloseFile(bak);
@@ -868,7 +868,7 @@ void CG_RestoreProfile(void)
 	Com_sprintf(cfgPath, sizeof(cfgPath),
 		"profiles/%s/%s", profile, CONFIG_NAME);
 	Com_sprintf(bakPath, sizeof(bakPath),
-		"profiles/%s/%s.etpub", profile, CONFIG_NAME);
+		"profiles/%s/%s.ETLpub", profile, CONFIG_NAME);
 
 	// tjw: restore the backup copy	generated from forcecvar
 	len = trap_FS_FOpenFile(bakPath, &bak, FS_READ);
@@ -3179,8 +3179,8 @@ void CG_Init( int serverMessageNum, int serverCommandSequence, int clientNum, qb
 	// tjw: not used
 	//trap_Cvar_Set( "cg_etVersion", GAME_VERSION_DATED );	// So server can check
 
-	// pheno: make sure to set the etpubc version
-	trap_Cvar_Set( "cg_etpubc", ETPUBC_VERSION );
+	// pheno: make sure to set the ETLpubc version
+	trap_Cvar_Set( "cg_ETLpubc", ETLPUBC_VERSION );
 
 	s = CG_ConfigString( CS_LEVEL_START_TIME );
 	cgs.levelStartTime = atoi( s );
@@ -3320,7 +3320,7 @@ void CG_Init( int serverMessageNum, int serverCommandSequence, int clientNum, qb
 		CG_Printf("^1ERROR: unable to load any HUD\n");
 	}
 
-	CG_ParseEtpubinfo();
+	CG_ParseETLpubinfo();
 
 	cg.crosshairMine = -1;
 	cg.crosshairDyna = -1;

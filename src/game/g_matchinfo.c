@@ -37,18 +37,18 @@ void G_matchinfo_add(g_matchinfo_t *matchinfo) {
 	int i;
 	char *message;
 
-	if (g_etpub_stats_master_url.string[0]) {
+	if (g_ETLpub_stats_master_url.string[0]) {
 		g_http_matchinfo_t *post_matchinfo = (g_http_matchinfo_t *)malloc(sizeof(g_http_matchinfo_t)); 
 		post_matchinfo->info_lines = malloc(num_lines * sizeof(char*));
 		post_matchinfo->info_lines_lengths = malloc(num_lines * sizeof(int));
 		post_matchinfo->num_lines = num_lines;
-		Q_strncpyz( post_matchinfo->url, g_etpub_stats_master_url.string, sizeof(post_matchinfo->url) );
+		Q_strncpyz( post_matchinfo->url, g_ETLpub_stats_master_url.string, sizeof(post_matchinfo->url) );
 		message = va("ID: %s"
 			" MAP: %s"
 			" Winner: %i"
 			" Length: %i"
 			" Hostname: %s\n",
-			g_etpub_stats_id.string,
+			g_ETLpub_stats_id.string,
 			matchinfo->map,
 			matchinfo->winner,
 			matchinfo->length,

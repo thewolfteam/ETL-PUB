@@ -474,7 +474,7 @@ void CG_ClassSelectMenu_f(void) {
 
 void CG_QuickMessage_f( void ) {
 	if( cgs.clientinfo[ cg.clientNum ].team == TEAM_SPECTATOR &&
-		cgs.etpub < ETPUB_VERSION(0,7,0) ) {
+		cgs.ETLpub < ETLPUB_VERSION(0,7,0) ) {
 		return;
 	}
 
@@ -608,7 +608,7 @@ static void CG_TeamVoiceChat_f( void ) {
 	// NERVE - SMF - don't let spectators voice chat
 	// NOTE - This cg.snap will be the person you are following, but its just for intermission test
 	if ( cg.snap && cg.snap->ps.pm_type != PM_INTERMISSION &&
-			cgs.etpub < ETPUB_VERSION(0,7,0) ) {
+			cgs.ETLpub < ETLPUB_VERSION(0,7,0) ) {
 		if ( cgs.clientinfo[cg.clientNum].team == TEAM_SPECTATOR || 
 				cgs.clientinfo[cg.clientNum].team == TEAM_FREE ) {
 			CG_Printf ( CG_TranslateString( "Can't team voice chat as a spectator.\n" ) );
@@ -1292,8 +1292,8 @@ static consoleCommand_t	commands[] =
 	{ "undoSpeaker", CG_UndoSpeaker_f },
 	{ "cpm", CG_CPM_f },
 	{ "forcetapout", CG_ForceTapOut_f },
-	{ "etpub", CG_Nop_f },
-	{ "etpubc", CG_Nop_f },
+	{ "ETLpub", CG_Nop_f },
+	{ "ETLpubc", CG_Nop_f },
 	{ "hidevote", CG_HideVote_f },
 	{ "resetmaxspeed", CG_ResetMaxSpeed_f },
 	{ "loadfont", CG_LoadFont_f },
@@ -1512,7 +1512,7 @@ void CG_InitConsoleCommands( void ) {
 	trap_AddCommand ("vsay_team");
 	trap_AddCommand ("where");
 
-	// kw: new etpub commands
+	// kw: new ETLpub commands
 	trap_AddCommand("hitsounds");
 	trap_AddCommand("m");
 	trap_AddCommand("mt");
@@ -1532,7 +1532,7 @@ void CG_InitConsoleCommands( void ) {
 	trap_AddCommand("shoutcastlogin");
 	trap_AddCommand("shoutcastlogout");
 	trap_AddCommand("lua_status");
-	trap_AddCommand("etpub_version");
+	trap_AddCommand("ETLpub_version");
 
 	// tjw: remove engine commands
 	trap_RemoveCommand("+lookup");

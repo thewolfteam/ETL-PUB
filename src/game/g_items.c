@@ -736,7 +736,7 @@ int Pickup_Weapon( gentity_t *ent, gentity_t *other ) {
 				} else if ((ent->item->giTag == WP_THOMPSON || ent->item->giTag == WP_MP40)) { // TODO: ???? (quad)
 					// redeye - NQ style weapon switching with full ammo
 					// note: I wrote this code before source of NQ was available, so this is less
-					// good than NQ's implementation but still better than original ETPub
+					// good than NQ's implementation but still better than original ETLPub
 					int weap = BG_FindClipForWeapon(ent->item->giTag);
 					int ammoweap = BG_FindAmmoForWeapon(ent->item->giTag);
 					int max_ammo_per_clip = GetAmmoTableData(ammoweap)->maxclip;

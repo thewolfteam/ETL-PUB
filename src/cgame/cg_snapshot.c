@@ -270,7 +270,7 @@ static void CG_TransitionSnapshot( void ) {
 		}
 
 		// pheno: KMETAVZER - limbo panel XP overflow fix
-		if( cgs.etpub > ETPUB_VERSION( 0, 8, 2 ) ) { 
+		if( cgs.ETLpub > ETLPUB_VERSION( 0, 8, 2 ) ) { 
 			cg.xp = ( 32768 * cg.snap->ps.stats[STAT_XP_OVERFLOW] ) +
 				cg.snap->ps.stats[STAT_XP];
 		} else {

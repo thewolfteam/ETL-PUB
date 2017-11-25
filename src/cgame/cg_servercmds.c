@@ -245,21 +245,21 @@ and whenever the server updates any serverinfo flagged cvars
 */
 void CG_ParseServerinfo( void ) {
 	const char	*info;
-	char etpub[6];
+	char ETLpub[6];
 	char	*mapname;
 
 	info = CG_ConfigString( CS_SERVERINFO );
 	cg_gameType.integer = cgs.gametype = atoi( Info_ValueForKey( info, "g_gametype" ) );
 	cg_antilag.integer = cgs.antilag = atoi( Info_ValueForKey( info, "g_antilag" ) );
 
-	// tjw: hack to detect 0.5.x versions of etpub server
-	Q_strncpyz(etpub, Info_ValueForKey(info, "gamename"), sizeof(etpub));
-	if(!Q_stricmp(etpub, "etpub")) {
-		Q_strncpyz(etpub,
+	// tjw: hack to detect 0.5.x versions of ETLpub server
+	Q_strncpyz(ETLpub, Info_ValueForKey(info, "gamename"), sizeof(ETLpub));
+	if(!Q_stricmp(ETLpub, "ETLpub")) {
+		Q_strncpyz(ETLpub,
 				Info_ValueForKey(info, "mod_version"),
-				sizeof(etpub));
-		if(!Q_stricmp(etpub, "0.5."))
-			cgs.etpub = ETPUB_VERSION(0,5,0);
+				sizeof(ETLpub));
+		if(!Q_stricmp(ETLpub, "0.5."))
+			cgs.ETLpub = ETLPUB_VERSION(0,5,0);
 	}
 
 	if ( !cgs.localServer ) {
@@ -287,7 +287,7 @@ void CG_ParseServerinfo( void ) {
 	trap_Cvar_Set( "cg_ui_voteFlags", ((authLevel.integer == RL_NONE) ? Info_ValueForKey(info, "voteFlags") : "0"));
 }
 
-// forty - #303 - Make etpub client check the xp needed to level
+// forty - #303 - Make ETLpub client check the xp needed to level
 // Michael
 static void InitSkillLevelStructure( skillType_t skillType )
 {
@@ -351,16 +351,16 @@ static void InitSkillLevelStructure( skillType_t skillType )
 	}
 }
 
-void CG_ParseEtpubinfo( void ) {
+void CG_ParseETLpubinfo( void ) {
 	const char *info;
 	const char *s;
 	char a[4], b[4], c[4];
 	int i = 0;
-	int etpub;
+	int ETLpub;
 
-	info = CG_ConfigString( CS_ETPUBINFO );
+	info = CG_ConfigString( CS_ETLPUBINFO );
 
-	s = Info_ValueForKey(info, "etpub");
+	s = Info_ValueForKey(info, "ETLpub");
 	while(*s != '.' && i < sizeof(a)) {
 		a[i++] = *s;
 		s++;
@@ -380,11 +380,11 @@ void CG_ParseEtpubinfo( void ) {
 		s++;
 	}
 
-	s = Info_ValueForKey(info, "etpub");
-	etpub = ETPUB_VERSION(atoi(a), atoi(b), atoi(c));
-	if(etpub > 0 && etpub != cgs.etpub) {
-		CG_Printf("^3client: detected etpub server %s (%i)\n", s, etpub);
-		cgs.etpub = etpub;
+	s = Info_ValueForKey(info, "ETLpub");
+	ETLpub = ETLPUB_VERSION(atoi(a), atoi(b), atoi(c));
+	if(ETLpub > 0 && ETLpub != cgs.ETLpub) {
+		CG_Printf("^3client: detected ETLpub server %s (%i)\n", s, ETLpub);
+		cgs.ETLpub = ETLpub;
 	}
 
 	cgs.misc = atoi(Info_ValueForKey(info, "g_misc"));
@@ -406,7 +406,7 @@ void CG_ParseEtpubinfo( void ) {
 	cgs.mapVoteMapY = atoi(Info_ValueForKey(info, "mapY"));
 
 	// gabriel: client-side weapons restriction enforcement
-	if (etpub < ETPUB_VERSION(0, 8, 0)) {
+	if (ETLpub < ETLPUB_VERSION(0, 8, 0)) {
 		// Rely on server-side checking
 		Q_strncpyz(cgs.team_maxPanzers, "-1", sizeof(cgs.team_maxPanzers));
 		Q_strncpyz(cgs.team_maxMortars, "-1", sizeof(cgs.team_maxMortars));
@@ -430,7 +430,7 @@ void CG_ParseEtpubinfo( void ) {
 	cgs.friendlyFire = atoi( Info_ValueForKey( info, "g_friendlyFire" ) );
 
 	// forty - #303 -
-	if (etpub < ETPUB_VERSION(0, 8, 0)) {
+	if (ETLpub < ETLPUB_VERSION(0, 8, 0)) {
 		// Rely on server-side checking
 		Q_strncpyz(cgs.skill_soldier, "20 50 90 140", sizeof(cgs.skill_soldier));
 		InitSkillLevelStructure(SK_HEAVY_WEAPONS);
@@ -1006,8 +1006,8 @@ static void CG_ConfigStringModified(void)
 	case CS_FILTERCAMS:
 		cg.filtercams = atoi(str) ? qtrue : qfalse;
 		break;
-	case CS_ETPUBINFO:
-		CG_ParseEtpubinfo();
+	case CS_ETLPUBINFO:
+		CG_ParseETLpubinfo();
 		break;
 	case CS_SHADERSTATE:
 		CG_ShaderStateChanged();
@@ -2088,8 +2088,8 @@ void CG_parseWeaponStatsGS_cmd(void)
 
 			Q_strncpyz(gs->strExtra[0], va("Damage Given: %-6d  Team Damage Given: %d", dmg_given, team_dmg_given), sizeof(gs->strExtra[0]));
 
-			// Dens: if a newer etpub is running, we have seperated teamdamage
-			if( cgs.etpub >= ETPUB_VERSION(0,8,0)){
+			// Dens: if a newer ETLpub is running, we have seperated teamdamage
+			if( cgs.ETLpub >= ETLPUB_VERSION(0,8,0)){
 				int team_dmg_rcvd = atoi(CG_Argv(iArg++));
 				Q_strncpyz(gs->strExtra[1], va("Damage Recvd: %-6d  Team Damage Recvd: %d", dmg_rcvd, team_dmg_rcvd), sizeof(gs->strExtra[1]));
 			}else{
@@ -2211,8 +2211,8 @@ void CG_parseWeaponStats_cmd(void (txt_dump)(char *))
 
 			txt_dump(va("\n^3Damage Given: ^7%-6d  ^3Team Damage Given: ^7%d\n", dmg_given, team_dmg_given));
 
-			// Dens: if a newer etpub is running, we have seperated teamdamage
-			if( cgs.etpub >= ETPUB_VERSION(0,8,0)){
+			// Dens: if a newer ETLpub is running, we have seperated teamdamage
+			if( cgs.ETLpub >= ETLPUB_VERSION(0,8,0)){
 				team_dmg_rcvd = atoi(CG_Argv(iArg++));
 				txt_dump(va(  "^3Damage Recvd: ^7%-6d  ^3Team Damage Recvd: ^7%d\n", dmg_rcvd, team_dmg_rcvd));
 			}else{

@@ -474,7 +474,7 @@ static void G_SendKR(gentity_t *ent)
 
 	for(i=0; i < level.numConnectedClients; i++) {
 		cl = &level.clients[level.sortedClients[i]];
-		if(ent->client->pers.etpubc > 20060606 || ent->client->sess.ettv) {
+		if(ent->client->pers.ETLpubc > 20060606 || ent->client->sess.ettv) {
 			kr_kills_per_death = G_GetAdjKillsPerDeath(
 				cl->sess.overall_killrating
 				,cl->sess.overall_killvariance
@@ -587,8 +587,8 @@ qboolean G_SendScore_Add(gentity_t *ent, int i, char *buf, int bufsize)
 		(level.time - cl->pers.enterTime - (level.time - level.intermissiontime)) / 60000,
 		g_entities[level.sortedClients[i]].s.powerups,
 		// pheno: send miscScoreFlags instead of playerClass if
-		//        etpubc > 20090112 is installed
-		ent->client->pers.etpubc > 20090112 ?
+		//        ETLpubc > 20090112 is installed
+		ent->client->pers.ETLpubc > 20090112 ?
 			miscScoreFlags : playerClass,
 		respawnsLeft);
 
@@ -617,10 +617,10 @@ void G_SendScore( gentity_t *ent ) {
 	char		buffer[987];
 	char		startbuffer[32];
 
-	if((g_playerRating.integer && ent->client->pers.etpubc > 20060205) || ent->client->sess.ettv) {
+	if((g_playerRating.integer && ent->client->pers.ETLpubc > 20060205) || ent->client->sess.ettv) {
 		G_SendPR(ent);
 	}
-	if((g_killRating.integer && ent->client->pers.etpubc > 20060205) || ent->client->sess.ettv) {
+	if((g_killRating.integer && ent->client->pers.ETLpubc > 20060205) || ent->client->sess.ettv) {
 		G_SendKR(ent);
 	}
 
@@ -3047,7 +3047,7 @@ void G_SayTo( gentity_t *ent, gentity_t *other, int mode, int color, const char 
 		trap_SendServerCommand(other-g_entities,
 			va("%s \"%s%c%c%s%s\" %i %i",
 			cmd, name, Q_COLOR_ESCAPE, color,
-			other->client->pers.etpubc >= 20090112 ? escape_string(message) : message, //mcwf
+			other->client->pers.ETLpubc >= 20090112 ? escape_string(message) : message, //mcwf
 			(!Q_stricmp(cmd, "print")) ? "\n" : "",
 			ent-g_entities, localize));
 
@@ -5527,7 +5527,7 @@ qboolean ClientIsFlooding(gentity_t *ent, qboolean noUpdate) {
 	return qfalse;
 }
 
-// Dens: etpubclient >= 20070819 lets the server make the reward message, so
+// Dens: ETLpubclient >= 20070819 lets the server make the reward message, so
 // that it really matches the serversettings (no more "You have been rewarded
 // with Adrenaline Self" when this is disabled serverside
 // This code can probably be done far more efficient...
@@ -5635,7 +5635,7 @@ void G_SendSkillReward(gentity_t *ent) {
 		return;
 	}
 
-	if(ent->client->pers.etpubc < 20070819){
+	if(ent->client->pers.ETLpubc < 20070819){
 		return;
 	}
 
@@ -5803,7 +5803,7 @@ void ClientCommand( int clientNum ) {
 	} else if (Q_stricmp (cmd, "fu") == 0) {
 		return;
 		// quad - TODO: implement "full update"
-		// Do we really need this? ETPub is sending the scores automatically...
+		// Do we really need this? ETLPub is sending the scores automatically...
 		//
 		// ETPro behaviour as discussed with zinx:
 		// zinx> sends score, team info, and resets deltas to baselines so they're fully resent
@@ -5984,9 +5984,9 @@ void ClientCommand( int clientNum ) {
 		// josh: use revive needle to adren
 		G_AdrenOther(ent);
 	}
-	// pheno: etpub version command
-	else if( !Q_stricmp( cmd, "etpub_version" ) ) {
-		etpub_version( ent );
+	// pheno: ETLpub version command
+	else if( !Q_stricmp( cmd, "ETLpub_version" ) ) {
+		ETLpub_version( ent );
 	}
 	else {
 		trap_SendServerCommand( clientNum, va("print \"unknown cmd[lof] %s\n\"", cmd ) );

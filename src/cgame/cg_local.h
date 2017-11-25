@@ -17,7 +17,7 @@
 #include "../game/bg_public.h"
 #include "cg_public.h"
 #include "../ui/ui_shared.h"
-#include "etpubc.h"
+#include "ETLpubc.h"
 
 #define MAX_LOCATIONS		256
 #define	POWERUP_BLINKS		5
@@ -2067,7 +2067,7 @@ typedef struct {
 	char			team_maxMG42s[10];
 	char			team_maxGrenLaunchers[10];
 
-	// forty - #303 - Make etpub client check the xp needed to level
+	// forty - #303 - Make ETLpub client check the xp needed to level
 	char			skill_soldier[MAX_CVAR_VALUE_STRING];
 	char			skill_medic[MAX_CVAR_VALUE_STRING];
 	char			skill_engineer[MAX_CVAR_VALUE_STRING];
@@ -2297,8 +2297,8 @@ typedef struct {
 	int misc; // from g_misc
 	float staminaRecharge; // Perro: Stamina Rebuild
 	int panzerLevelUp; // from g_panzerLevelUp
-	// tjw: etpub server version
-	int etpub;
+	// tjw: ETLpub server version
+	int ETLpub;
 
 	int hidevote;
 	int weapons; // see WPF_ defines
@@ -3163,7 +3163,7 @@ void CG_parseMapVoteTally(void);
 //
 void CG_ExecuteNewServerCommands( int latestSequence );
 void CG_ParseServerinfo( void );
-void CG_ParseEtpubinfo( void );
+void CG_ParseETLpubinfo( void );
 void CG_ParseWolfinfo( void );			// NERVE - SMF
 void CG_ParseSpawns( void );
 void CG_ParseServerVersionInfo(const char *pszVersionInfo);

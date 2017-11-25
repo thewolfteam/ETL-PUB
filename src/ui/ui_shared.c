@@ -1736,7 +1736,7 @@ void Script_ExecWolfConfig(itemDef_t *item, qboolean *bAbort, char **args) {
 			Com_sprintf(cfgPath, sizeof(cfgPath),
 				"profiles/%s/%s", cl_profileStr, CONFIG_NAME);
 			Com_sprintf(bakPath, sizeof(bakPath),
-				"profiles/%s/%s.etpub", cl_profileStr, CONFIG_NAME);
+				"profiles/%s/%s.ETLpub", cl_profileStr, CONFIG_NAME);
 
 			// tjw: restore the backup copy	generated from forcecvar
 			len = trap_FS_FOpenFile(bakPath, &bak, FS_READ);

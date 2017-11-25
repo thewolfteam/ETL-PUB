@@ -26,8 +26,8 @@ qboolean G_IsShoutcastStatusAvailable( gentity_t *ent )
 {
 	if( !( ent->r.svFlags & SVF_BOT ) &&
 		// NOTE: shoutcaster support will only be available with
-		//       installed etpub client > 20090112
-		ent->client->pers.etpubc <= 20090112 ) {
+		//       installed etlpub client > 20090112
+		ent->client->pers.ETLpubc <= 20090112 ) {
 		return qfalse;
 	}
 

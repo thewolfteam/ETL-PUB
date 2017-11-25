@@ -1127,7 +1127,7 @@ static int _choosePriWeap(gentity_t *bot, int playerClass, int team)
 		}
 #ifdef NOQUARTER
 	} while(G_IsWeaponDisabled(bot,(weapon_t)_weaponBotToGame(iSelected),qtrue));
-#elif defined(ETPUB_VERSION)
+#elif defined(ETLPUB_VERSION)
 	} while(G_IsWeaponDisabled(bot,(weapon_t)_weaponBotToGame(iSelected),bot->client->sess.sessionTeam,qtrue));
 #else
 	} while(G_IsWeaponDisabled(bot,(weapon_t)_weaponBotToGame(iSelected)));
@@ -1368,11 +1368,11 @@ static int _chooseSecWeap(gentity_t *bot, int playerClass, int team)
 			iSelected = ET_WP_NONE;
 			break;
 		}
-#ifdef ETPUB_VERSION
+#ifdef ETLPUB_VERSION
 	} while(G_IsWeaponDisabled(bot,(weapon_t)_weaponBotToGame(iSelected),bot->client->sess.sessionTeam,qtrue));
 #else
 	} while(G_IsWeaponDisabled(bot,(weapon_t)_weaponBotToGame(iSelected)));
-#endif // ETPUB_VERSION
+#endif // ETLPUB_VERSION
 #endif // NOQUARTER
 
 	return iSelected;
@@ -2027,7 +2027,7 @@ public:
 				bot->client->sess.latchPlayerWeapon = 0;
 			if(G_IsWeaponDisabled(bot,(weapon_t)bot->client->sess.latchPlayerWeapon2,qtrue))
 				bot->client->sess.latchPlayerWeapon2 = 0;
-#elif defined(ETPUB_VERSION)
+#elif defined(ETLPUB_VERSION)
 			if(G_IsWeaponDisabled(bot,(weapon_t)bot->client->sess.latchPlayerWeapon,bot->client->sess.sessionTeam,qtrue))
 				bot->client->sess.latchPlayerWeapon = 0;
 			if(G_IsWeaponDisabled(bot,(weapon_t)bot->client->sess.latchPlayerWeapon2,bot->client->sess.sessionTeam,qtrue))
@@ -2157,7 +2157,7 @@ public:
 				bot->client->sess.latchPlayerWeapon = 0;
 			if(G_IsWeaponDisabled(bot,(weapon_t)bot->client->sess.latchPlayerWeapon2,qtrue))
 				bot->client->sess.latchPlayerWeapon2 = 0;
-#elif defined(ETPUB_VERSION)
+#elif defined(ETLPUB_VERSION)
 			if(G_IsWeaponDisabled(bot,(weapon_t)bot->client->sess.latchPlayerWeapon,bot->client->sess.sessionTeam,qtrue))
 				bot->client->sess.latchPlayerWeapon = 0;
 			if(G_IsWeaponDisabled(bot,(weapon_t)bot->client->sess.latchPlayerWeapon2,bot->client->sess.sessionTeam,qtrue))
@@ -3188,7 +3188,7 @@ public:
 #ifdef NOQUARTER
 				if(pEnt->client->ps.eFlags & EF_POISONED)
 					_flags.SetFlag(ET_ENT_FLAG_POISONED);
-#elif defined ETPUB_VERSION
+#elif defined ETLPUB_VERSION
 				if(pEnt->client->pmext.poisoned)
 					_flags.SetFlag(ET_ENT_FLAG_POISONED);
 #elif defined JAYMOD_name
@@ -5130,7 +5130,7 @@ public:
 						pMsg->m_Current = G_CountTeamLandmines(pEnt->client->sess.sessionTeam);
 #ifdef NOQUARTER
 						pMsg->m_Max = team_maxLandmines.integer;
-#elif defined ETPUB_VERSION
+#elif defined ETLPUB_VERSION
 						pMsg->m_Max = g_maxTeamLandmines.integer;
 #else
 						pMsg->m_Max = MAX_TEAM_LANDMINES;

@@ -338,8 +338,8 @@ vmCvar_t g_censorNamesNeil;
 vmCvar_t g_httpPostURL_chat;
 vmCvar_t g_httpPostURL_ratings;
 vmCvar_t g_httpPostURL_log;
-vmCvar_t g_etpub_stats_id;
-vmCvar_t g_etpub_stats_master_url;
+vmCvar_t g_ETLpub_stats_id;
+vmCvar_t g_ETLpub_stats_master_url;
 vmCvar_t g_killRating;
 vmCvar_t g_trackBehavior;
 vmCvar_t g_playerRating;
@@ -907,8 +907,8 @@ cvarTable_t		gameCvarTable[] = {
 	{ &g_httpPostURL_chat, "g_httpPostURL_chat", "", 0 },
 	{ &g_httpPostURL_ratings, "g_httpPostURL_ratings", "", 0 },
 	{ &g_httpPostURL_log, "g_httpPostURL_log", "", 0 },
-	{ &g_etpub_stats_id, "g_etpub_stats_id", "-1", 0 },
-	{ &g_etpub_stats_master_url, "g_etpub_stats_master_url", "http://stats.etpub.org/submit_game.php", 0 },
+	{ &g_ETLpub_stats_id, "g_ETLpub_stats_id", "-1", 0 },
+	{ &g_ETLpub_stats_master_url, "g_ETLpub_stats_master_url", "http://stats.ETLPUB.org/submit_game.php", 0 },
 	{ &g_censor, "g_censor", "", 0 },
 	{ &g_censorNames, "g_censorNames", "", 0 },
 	{ &g_censorPenalty, "g_censorPenalty", "0", 0 },
@@ -1115,8 +1115,8 @@ cvarTable_t		gameCvarTable[] = {
 
 	{ &g_countryFlags, "g_countryFlags", "1", 0}, //mcwf GeoIP
 
-	{ NULL, "mod_version", ETPUB_VERSION, CVAR_SERVERINFO | CVAR_ROM },
-	{ NULL, "mod_url", "http://etpub.org", CVAR_SERVERINFO | CVAR_ROM },
+	{ NULL, "mod_version", ETLPUB_VERSION, CVAR_SERVERINFO | CVAR_ROM },
+	{ NULL, "mod_url", "http://ETLPUB.org", CVAR_SERVERINFO | CVAR_ROM },
 	// Omni-bot user defined path to load bot library from.
 	{ &g_OmniBotPath, "omnibot_path", "", CVAR_ARCHIVE | CVAR_NORESTART, 0, qfalse },
 	{ &g_OmniBotEnable, "omnibot_enable", "1", CVAR_ARCHIVE | CVAR_SERVERINFO_NOUPDATE | CVAR_NORESTART, 0, qfalse },
@@ -2125,7 +2125,7 @@ static qboolean G_IsVoteFlagCvar( cvarTable_t *cv )
 }
 
 
-qboolean G_IsEtpubinfoCvar(vmCvar_t *c)
+qboolean G_IsETLPUBinfoCvar(vmCvar_t *c)
 {
 	return (
 		c == &g_misc ||
@@ -2156,12 +2156,12 @@ qboolean G_IsEtpubinfoCvar(vmCvar_t *c)
 
 }
 
-void G_UpdateEtpubinfo(void)
+void G_UpdateETLPUBinfo(void)
 {
 	char cs[MAX_INFO_STRING];
 	cs[0] = '\0';
 
-	Info_SetValueForKey(cs, "etpub", ETPUB_VERSION);
+	Info_SetValueForKey(cs, "ETLPUB", ETLPUB_VERSION);
 	Info_SetValueForKey(cs, "g_misc",
 		va("%i", g_misc.integer));
 	Info_SetValueForKey(cs, "g_doubleJumpHeight",
@@ -2201,7 +2201,7 @@ void G_UpdateEtpubinfo(void)
 	// forty - #601 - Merge Jaquboss' client-side hitbox prediction code
 	Info_SetValueForKey(cs, "HB",
 		va("%i", g_hitboxes.integer));
-	// forty - #303 - Make etpub client check the xp needed to level
+	// forty - #303 - Make ETLPUB client check the xp needed to level
 	// FIXME - maybe we could base64/uuencode the whole 35 byte skillLevels structure
 	//		   and send it over in one key.
 	Info_SetValueForKey(cs, "skill_soldier",
@@ -2225,7 +2225,7 @@ void G_UpdateEtpubinfo(void)
 	Info_SetValueForKey( cs, "g_friendlyFire",
 		va( "%i", g_friendlyFire.integer ) );
 
-	trap_SetConfigstring(CS_ETPUBINFO, cs);
+	trap_SetConfigstring(CS_ETLPUBINFO, cs);
 }
 
 // Panzer War
@@ -2522,8 +2522,8 @@ void G_UpdateCvars( void )
 						trap_Cvar_Set(cv->cvarName, "33");
 					}
 				}
-				else if(G_IsEtpubinfoCvar(cv->vmCvar)) {
-					G_UpdateEtpubinfo();
+				else if(G_IsETLPUBinfoCvar(cv->vmCvar)) {
+					G_UpdateETLPUBinfo();
 
 					// pheno: check for g_misc value changes
 					if (cv->vmCvar == &g_misc) {
@@ -2555,11 +2555,11 @@ void G_UpdateCvars( void )
 						fToggles = (G_checkServerToggle(cv->vmCvar) || fToggles);
 					}
 
-					// pheno: fixed - update etpub info string when
+					// pheno: fixed - update ETLPUB info string when
 					//        g_friendlyFire is changed (don't check for
-					//        g_friendlyFire changes in G_IsEtpubinfoCvar()!)
+					//        g_friendlyFire changes in G_IsETLPUBinfoCvar()!)
 					if( cv->vmCvar == &g_friendlyFire ) {
-						G_UpdateEtpubinfo();
+						G_UpdateETLPUBinfo();
 					}
 				}
 			}
@@ -3091,7 +3091,7 @@ void G_InitGame( int levelTime, int randomSeed, int restart ) {
 
 	}
 
-	G_UpdateEtpubinfo();
+	G_UpdateETLPUBinfo();
 
 	// parse the key/value pairs and spawn gentities
 	G_SpawnEntitiesFromString();
@@ -4442,7 +4442,7 @@ void CheckIntermissionExit( void ) {
 		// gabriel: specs do have the "ready" button, so there is an expectation
 		// for it to work.  Also, specs can also vote on maps, so count their
 		// vote here too.  Changing either of these rules should have a
-		// corresponding change on the etpub client behavior, so that visual
+		// corresponding change on the ETLPUB client behavior, so that visual
 		// feedback is given to the user
 
 		cl = level.clients + level.sortedClients[i];
@@ -5928,9 +5928,9 @@ void G_mapvoteinfo_read()
 }
 
 // pheno: tell us more about the running client and/or server version
-void etpub_version( gentity_t *ent )
+void ETLpub_version( gentity_t *ent )
 {
-	const char *s = ETPUB_VERSION;
+	const char *s = ETLPUB_VERSION;
 	char a[4], b[4], c[4];
 	int i = 0;
 
@@ -5957,19 +5957,19 @@ void etpub_version( gentity_t *ent )
 	G_refPrintf( ent, "^1-----------------------------------------------------"
 		"-----------------" );
 
-	if( ent && ent->client->pers.etpubc ) {
+	if( ent && ent->client->pers.ETLpubc ) {
 		char userinfo[MAX_INFO_STRING];
 		const char *s2;
 
 		trap_GetUserinfo( ent - g_entities, userinfo, sizeof( userinfo ) );
-		s2 = Info_ValueForKey( userinfo, "cg_etpubcbuild" );
+		s2 = Info_ValueForKey( userinfo, "cg_ETLPUBcbuild" );
 
-		G_refPrintf( ent, " ^7etpubc ^1: ^7%-15i %s",
-			ent->client->pers.etpubc, s2 );
+		G_refPrintf( ent, " ^7ETLPUBc ^1: ^7%-15i %s",
+			ent->client->pers.ETLpubc, s2 );
 	}
 
-	G_refPrintf( ent, " ^7etpub  ^1: ^7%-15s %s %s\n",
-		va( "%s (%i)", ETPUB_VERSION,
+	G_refPrintf( ent, " ^7ETLPUB  ^1: ^7%-15s %s %s\n",
+		va( "%s (%i)", ETLPUB_VERSION,
 			( atoi( a ) << 16 ) + ( atoi( b ) << 8 ) + atoi( c ) ),
 		CPUSTRING, __DATE__ );
 }

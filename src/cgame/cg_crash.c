@@ -1,7 +1,7 @@
 #define NO_OPTIMIZATIONS
 
 #include "cg_local.h"
-#include "etpubc.h"
+#include "ETLpubc.h"
 
 void CG_Shutdown(void);
 
@@ -81,7 +81,7 @@ void linux_siginfo(int signal, siginfo_t *siginfo) {
 	}
 }
 
-// tjw: i'm disabling etpub_dsnoinfo() because it depends on
+// tjw: i'm disabling etlpub_dsnoinfo() because it depends on
 //      glibc 2.3.3 only  (it also won't build on earlier glibc 2.3
 //      versions).
 //      We're only doing glibc 2.1.3 release builds anyway.
@@ -197,12 +197,12 @@ void CrashHandler(int signal, siginfo_t *siginfo, ucontext_t *ctx) {
 		// yada - try logging to disk too
 		trap_Cvar_VariableStringBuffer("fs_homepath", homepath, sizeof(homepath));
 		trap_Cvar_VariableStringBuffer("fs_game", gamepath, sizeof(gamepath));
-		crashLog=fopen(va("%s/%s/etpubc_crash.log",homepath,gamepath),"w");
+		crashLog=fopen(va("%s/%s/etlpubc_crash.log",homepath,gamepath),"w");
 
 		Crash_Printf("-8<------- Crash Information ------->8-\n");
-		Crash_Printf("   Please forward to etpub mod team.   \n");
+		Crash_Printf("   Please forward to ETLpub mod team.   \n");
 		Crash_Printf("---------------------------------------\n");
-		Crash_Printf("Version: %s Linux\n", ETPUBC_VERSION);
+		Crash_Printf("Version: %s Linux\n", ETLPUBC_VERSION);
 		Crash_Printf("Map: %s\n",cgs.rawmapname);
 		linux_siginfo(signal, siginfo);
 		linux_dsoinfo();
@@ -257,7 +257,7 @@ PFNSYMENUMERATEMODULES pfnSymEnumerateModules = NULL;
 PFNSYMFUNCTIONTABLEACCESS pfnSymFunctionTableAccess = NULL;
 
 /*
-Visual C 7 Users, place the PDB file generated with the build into your etpub
+Visual C 7 Users, place the PDB file generated with the build into your ETLpub
 directory otherwise your stack traces will be useless.
 
 Visual C 6 Users, shouldn't need the PDB file since the DLL will contain COFF symbols.
@@ -457,12 +457,12 @@ LONG CALLBACK win32_exception_handler(LPEXCEPTION_POINTERS e) {
 	trap_Cvar_VariableStringBuffer("fs_game", gamepath, sizeof(gamepath));
 
 	// yada - try logging to disk too
-	crashLog=fopen(va("%s\\%s\\etpubc_crash.log",homepath,gamepath),"w");
+	crashLog=fopen(va("%s\\%s\\ETLpubc_crash.log",homepath,gamepath),"w");
 	pfnSymInitialize(GetCurrentProcess(), va("%s\\%s", basepath, gamepath), TRUE);
 	Crash_Printf("-8<------- Crash Information ------->8-\n");
-	Crash_Printf("   Please forward to etpub mod team.   \n");
+	Crash_Printf("   Please forward to ETLpub mod team.   \n");
 	Crash_Printf("---------------------------------------\n");
-	Crash_Printf("Version: %s Win32\n", ETPUBC_VERSION);
+	Crash_Printf("Version: %s Win32\n", ETLPUBC_VERSION);
 	Crash_Printf("Map: %s\n",cgs.rawmapname);
 	win32_exceptioninfo(e);
 	win32_dllinfo();

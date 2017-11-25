@@ -3283,7 +3283,7 @@ qboolean G_ScriptAction_Announce_Icon( gentity_t *ent, char *params ) {
 	}
 
 	// pheno: log script wm_announce_icon actions (ETPro behavior)
-	G_LogPrintf("etpub announce: \"%s\"\n", token);
+	G_LogPrintf("ETLpub announce: \"%s\"\n", token);
 
 	return qtrue;
 }
@@ -3319,7 +3319,7 @@ qboolean G_ScriptAction_Announce( gentity_t *ent, char *params )
 	}
 
 	// pheno: log script wm_announce actions (ETPro behavior)
-	G_LogPrintf("etpub announce: \"%s\"\n", token);
+	G_LogPrintf("ETLpub announce: \"%s\"\n", token);
 
 	return qtrue;
 }

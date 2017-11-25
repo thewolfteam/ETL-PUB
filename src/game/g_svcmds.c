@@ -1752,9 +1752,9 @@ qboolean	ConsoleCommand( void ) {
 		return qtrue;
 	}
 
-	// pheno: etpub version command
-	if( !Q_stricmp( cmd, "etpub_version" ) ) {
-		etpub_version( NULL );
+	// pheno: ETLpub version command
+	if( !Q_stricmp( cmd, "ETLpub_version" ) ) {
+		ETLpub_version( NULL );
 		return qtrue;
 	}
 

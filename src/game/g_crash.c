@@ -1,5 +1,5 @@
 #include "g_local.h"
-#include "etpub.h"
+#include "ETLpub.h"
 
 #if defined __linux__
 
@@ -62,7 +62,7 @@
 		}
 	}
 
-	// tjw: i'm disabling etpub_dsnoinfo() because it depends on
+	// tjw: i'm disabling etlpub_dsnoinfo() because it depends on
 	//      glibc 2.3.3 only  (it also won't build on earlier glibc 2.3
 	//      versions).
 	//      We're only doing glibc 2.1.3 release builds anyway.
@@ -174,9 +174,9 @@
 
 		if(segvloop < 2) {
 			G_LogPrintf("-8<------- Crash Information ------->8-\n");
-			G_LogPrintf("   Please forward to etpub mod team.   \n");
+			G_LogPrintf("   Please forward to etlpub mod team.   \n");
 			G_LogPrintf("---------------------------------------\n");
-			G_LogPrintf("Version: %s %s Linux\n", GAMEVERSION, ETPUB_VERSION);
+			G_LogPrintf("Version: %s %s Linux\n", GAMEVERSION, ETLPUB_VERSION);
 			G_LogPrintf("Map: %s\n",level.rawmapname);
 			linux_siginfo(signal, siginfo);
 			linux_dsoinfo();
@@ -226,7 +226,7 @@
 	PFNSYMFUNCTIONTABLEACCESS pfnSymFunctionTableAccess = NULL;
 
 	/*
-		Visual C 7 Users, place the PDB file generated with the build into your etpub
+		Visual C 7 Users, place the PDB file generated with the build into your etlpub
 		directory otherwise your stack traces will be useless.
 
 		Visual C 6 Users, shouldn't need the PDB file since the DLL will contain COFF symbols.
@@ -350,9 +350,9 @@
 		trap_Cvar_VariableStringBuffer("fs_game", gamepath, sizeof(gamepath));
 		pfnSymInitialize(GetCurrentProcess(), va("%s\\%s", basepath, gamepath), TRUE);
 		G_LogPrintf("-8<------- Crash Information ------->8-\n");
-		G_LogPrintf("   Please forward to etpub mod team.   \n");
+		G_LogPrintf("   Please forward to ETLpub mod team.   \n");
 		G_LogPrintf("---------------------------------------\n");
-		G_LogPrintf("Version: %s %s Win32\n", GAMEVERSION, ETPUB_VERSION);
+		G_LogPrintf("Version: %s %s Win32\n", GAMEVERSION, ETLPUB_VERSION);
 		G_LogPrintf("Map: %s\n",level.rawmapname);
 		win32_exceptioninfo(e);
 		win32_dllinfo();

@@ -3540,8 +3540,8 @@ void CG_AltWeapon_f(void)
 	else if(cg.weaponSelect == WP_KNIFE) {
 		// tjw: throwable knifes if supported
 		if(cgs.throwableKnives >= 0 ||
-			(cgs.etpub >= ETPUB_VERSION(0,6,0) &&
-			 cgs.etpub <= ETPUB_VERSION(0,6,2))) {
+			(cgs.ETLpub >= ETLPUB_VERSION(0,6,0) &&
+			 cgs.ETLpub <= ETLPUB_VERSION(0,6,2))) {
 
 			trap_SendConsoleCommand("throwknife\n");
 		}

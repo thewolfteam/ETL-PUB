@@ -190,7 +190,7 @@ menuDef {
 	TRICHECKBOXACTIONMULTI( 8+.5*((FILTERS_WIDTH)-6)+2+2+12, 128, .5*((FILTERS_WIDTH)-6)-14, 10, .2, 8, "ui_browserShowTeamBalanced", cvarFloatList { "Filter Disabled" 0 "Only show..." 1 "Don't show..." 2 }, uiScript RefreshFilter ; setcvar ui_filterdescription "Filter affecting Servers with Force Team Balance", "Includes or excludes servers that enforce balanced teams, from the server list" )
 
 	// kw: filter on mods
-	MULTIACTIONLEFT( 8, 140, .5*((FILTERS_WIDTH)-6), 10, "Mod filter:", .2, 8, "ui_browserShowModName", cvarStrList { "Show all"; ""; "ETpub"; "etpub" }, uiScript RefreshFilter ; setcvar ui_filterdescription "Filter affecting game mod", "Includes only the server with the selected game modification name" )
+	MULTIACTIONLEFT( 8, 140, .5*((FILTERS_WIDTH)-6), 10, "Mod filter:", .2, 8, "ui_browserShowModName", cvarStrList { "Show all"; ""; "ETLPUB"; "ETLPUB" }, uiScript RefreshFilter ; setcvar ui_filterdescription "Filter affecting game mod", "Includes only the server with the selected game modification name" )
 
 	// kw: filter on (partial) server hostname
 	EDITFIELDACTION( 8+.5*((FILTERS_WIDTH)-6)+2+2, 140, .5*((FILTERS_WIDTH)-6), 10, "ServerName filter:", .2, 8, "ui_browserFilterHost", 15, 15, uiScript RefreshFilter ; setcvar ui_filterdescription "Filter affecting servernames", "Includes only the server with a (partial) stringmatch in the servername" )
